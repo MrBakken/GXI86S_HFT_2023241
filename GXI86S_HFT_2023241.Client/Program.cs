@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace GXI86S_HFT_2023241.Client
 {
@@ -6,7 +7,7 @@ namespace GXI86S_HFT_2023241.Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
