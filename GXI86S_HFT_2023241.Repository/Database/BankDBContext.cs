@@ -24,14 +24,11 @@ namespace GXI86S_HFT_2023241.Repository
         {
             if (!builder.IsConfigured)
             {
-                string conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\veres\source\repos\GXI86S_HFT_2023241\GXI86S_HFT_2023241.Repository\bank.mdf;Integrated Security=True";
-
-
-                builder.UseSqlServer(conn)
-                .UseLazyLoadingProxies();
+                builder.UseLazyLoadingProxies()
+                    .UseInMemoryDatabase("bank");
             }
-
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(entity =>
@@ -111,10 +108,7 @@ namespace GXI86S_HFT_2023241.Repository
                    // Adjunk hozzá további teszt fiókokat itt
                    );
 
-            var jsonData = File.ReadAllText("customers.json");
-            var customers = JsonSerializer.Deserialize<List<Customer>>(jsonData);
 
-            modelBuilder.Entity<Customer>().HasData(customers.ToArray());
 
             //    modelBuilder.Entity<Customer>().HasData(new Customer[]
             //        {
