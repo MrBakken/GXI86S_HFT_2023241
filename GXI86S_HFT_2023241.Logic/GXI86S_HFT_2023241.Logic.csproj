@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GXI86S_HFT_2023241.Models\GXI86S_HFT_2023241.Models.csproj" />
+    <ProjectReference Include="..\GXI86S_HFT_2023241.Repository\GXI86S_HFT_2023241.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

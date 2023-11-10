@@ -8,24 +8,22 @@ namespace GXI86S_HFT_2023241.Models
     
     public class Account
     {
-        
+
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int AccountNumber_ID { get; set; }
 
         public int CustomerId { get; set; }
 
         [Required]
-        [StringLength(240)]
-
-        public string AccountNumber { get; set; }
+        public CurrencyEnum CurrencyType { get; set; }
 
         public int Balance { get; set; }
 
         public DateTime CreationDate { get; set; }
 
-        public AccountType AccountType { get; set; }
+        public AccountTypeEnum AccountType { get; set; }
 
         public virtual Customer Customer { get; set; }
 
@@ -38,25 +36,35 @@ namespace GXI86S_HFT_2023241.Models
         public Account(string line)
         {
             string[] split = line.Split('$');
-            Id = int.Parse(split[0]);
+            AccountNumber_ID = int.Parse(split[0]);
             CustomerId = int.Parse(split[1]);
-            AccountNumber = split[2];
+
+            if (Enum.TryParse<CurrencyEnum>(split[2], out CurrencyEnum temp))
+            {
+                CurrencyType = temp;
+            }
+
             Balance = int.Parse(split[3]);
             CreationDate = DateTime.Parse(split[4]);
 
-            Transactions = new List<Transaction>();
-
-            if (Enum.TryParse<AccountType>(split[5], out AccountType temp))
+            if (Enum.TryParse<AccountTypeEnum>(split[5], out AccountTypeEnum temp2))
             {
-                AccountType = temp;
+                AccountType = temp2;
             }
+
+            Transactions = new List<Transaction>();
         }
-        
+
     }
 
-    public enum AccountType
+    public enum AccountTypeEnum
     {
         Current,
         Savings
+    }
+    public enum CurrencyEnum
+    {
+        EURO,
+        HUF
     }
 }

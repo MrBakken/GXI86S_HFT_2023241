@@ -11,12 +11,12 @@ namespace GXI86S_HFT_2023241.Repository
 
         public override Account Read(int id)
         {
-            return ctx.Accounts.FirstOrDefault(c => c.Id == id);
+            return ctx.Accounts.FirstOrDefault(c => c.AccountNumber_ID == id);
         }
 
         public override void Update(Account item)
         {
-            var old = Read(item.Id);
+            var old = Read(item.AccountNumber_ID);
             foreach (var prop in old.GetType().GetProperties())
             {
                 prop.SetValue(old, prop.GetValue(item));

@@ -19,10 +19,6 @@ namespace GXI86S_HFT_2023241.Models
         [StringLength(240)]
         public string LastName { get; set; }
 
-        [Required]
-        [StringLength(240)]
-        public string Address { get; set; }
-
         [StringLength(240)]
         public string Email { get; set; }
 
@@ -36,7 +32,7 @@ namespace GXI86S_HFT_2023241.Models
 
 
         public virtual ICollection<Account> Accounts { get; set; }
-        
+
 
         public Customer()
         {
@@ -49,20 +45,20 @@ namespace GXI86S_HFT_2023241.Models
             Id = int.Parse(split[0]);
             FirstName = split[1];
             LastName = split[2];
-            Address = split[3];
-            Email = split[4];
-            Phone = split[5];
-            BirthDate = DateTime.Parse(split[6].Replace("/","."));
+            Email = split[3];
+            Phone = split[4];
+            BirthDate = DateTime.Parse(split[5].Replace("-", "."));
             Accounts = new HashSet<Account>();
 
             Genders temp;
 
-            if (Enum.TryParse<Genders>(split[7], out temp))
+            if (Enum.TryParse<Genders>(split[6], out temp))
             {
                 Gender = temp;
             }
+
         }
-        
+
     }
     public enum Genders
     {
