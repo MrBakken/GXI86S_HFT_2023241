@@ -1,9 +1,7 @@
-﻿using GXI86S_HFT_2023241.Models;
+﻿using GXI86S_HFT_2023241.Logic;
+using GXI86S_HFT_2023241.Models;
 using GXI86S_HFT_2023241.Repository;
-using GXI86S_HFT_2023241.Logic;
 using System;
-using System.IO;
-using System.Linq;
 
 namespace GXI86S_HFT_2023241.Client
 {
@@ -13,7 +11,15 @@ namespace GXI86S_HFT_2023241.Client
         {
             var ctx = new BankDBContext();
             var repo = new CustomerRepository(ctx);
-            var logic = new BankLogic(repo);
+            var logic = new CustomerLogic(repo);
+
+            Customer a = new Customer()
+            {
+                FirstName = "Dom",
+                BirthDate = DateTime.Parse("2002.08.22")
+            };
+            logic.Create(a);
+            logic.Delete(10);
 
             var items = logic.ReadAll();
             ;
