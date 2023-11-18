@@ -21,7 +21,10 @@ namespace GXI86S_HFT_2023241.Logic
             {
                 throw new ArgumentException("You have to connect it to Client...");
             }
-            this.repo.Create(item);
+            else
+            {
+                this.repo.Create(item);
+            }
         }
 
         public void Update(Account item)
@@ -37,11 +40,7 @@ namespace GXI86S_HFT_2023241.Logic
         public Account Read(int id)
         {
             var Account = this.repo.Read(id);
-            if (Account == null)
-            {
-                throw new ArgumentException("Account is not exist...");
-            }
-            return this.repo.Read(id);
+            return Account == null ? throw new ArgumentException("Account is not exist...") : this.repo.Read(id);
         }
 
         public IQueryable<Account> ReadAll()

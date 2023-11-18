@@ -1,7 +1,10 @@
-﻿using GXI86S_HFT_2023241.Logic.InterfaceLogic;
+﻿using Castle.Core.Resource;
+using GXI86S_HFT_2023241.Logic.InterfaceLogic;
 using GXI86S_HFT_2023241.Models;
 using GXI86S_HFT_2023241.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GXI86S_HFT_2023241.Logic
@@ -39,11 +42,7 @@ namespace GXI86S_HFT_2023241.Logic
         public Customer Read(int id)
         {
             var custumer = this.repo.Read(id);
-            if (custumer == null)
-            {
-                throw new ArgumentException("Client is not exist...");
-            }
-            return this.repo.Read(id);
+            return custumer == null ? throw new ArgumentException("Client is not exist...") : this.repo.Read(id);
         }
 
         public IQueryable<Customer> ReadAll()
@@ -67,7 +66,14 @@ namespace GXI86S_HFT_2023241.Logic
         // SAvings vagy folyószámlán van több pénz
 
 
+        public List<Customer> GetCustomersWithBirthdayInYear(int year)
+        {
+            var customersWithBirthday = this.repo.ReadAll()
+                .Where(customer => customer.BirthDate.Year == year)
+                .ToList();
 
+            return customersWithBirthday;
+        }
 
     }
 }

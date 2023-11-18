@@ -37,11 +37,7 @@ namespace GXI86S_HFT_2023241.Logic
         public Transaction Read(int id)
         {
             var custumer = this.repo.Read(id);
-            if (custumer == null)
-            {
-                throw new ArgumentException("Account is not exist...");
-            }
-            return this.repo.Read(id);
+            return custumer == null ? throw new ArgumentException("Account is not exist...") : this.repo.Read(id);
         }
 
         public IQueryable<Transaction> ReadAll()

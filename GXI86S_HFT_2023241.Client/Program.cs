@@ -28,8 +28,17 @@ namespace GXI86S_HFT_2023241.Client
             Account b = new Account()
             {
                 Balance = 1000,
+                Customer = a
             };
             logicA.Create(b);
+
+            Transaction c = new Transaction()
+            {
+                Amount = -300,
+                Account = b,
+            };
+            logicT.Create(c);
+            
 
             var items = logicC.ReadAll();
             ;
