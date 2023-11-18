@@ -11,13 +11,13 @@ namespace GXI86S_HFT_2023241.Models
         public int Id { get; set; }
 
         [Required]
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
 
         [Required]
-        public int Amount { get; set; }
+        public double Amount { get; set; }
 
         [StringLength(240)]
         public string Description { get; set; }

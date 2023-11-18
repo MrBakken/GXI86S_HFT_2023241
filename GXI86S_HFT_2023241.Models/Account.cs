@@ -14,7 +14,7 @@ namespace GXI86S_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountNumber_ID { get; set; }
 
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
 
         [Required]
         public CurrencyEnum CurrencyType { get; set; }

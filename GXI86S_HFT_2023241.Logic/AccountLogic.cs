@@ -17,13 +17,13 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Create(Account item)
         {
-            if (item.Customer == null)
+            if (item.CustomerId != null || item.Customer != null)
             {
-                throw new ArgumentException("You have to connect it to Client...");
+                this.repo.Create(item); 
             }
             else
             {
-                this.repo.Create(item);
+                throw new ArgumentException("You have to connect it to Client...");
             }
         }
 

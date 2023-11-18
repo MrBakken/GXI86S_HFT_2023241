@@ -17,11 +17,15 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Create(Transaction item)
         {
-            if (item.Account == null)
+            if (item.AccountId != null || item.Account != null)
             {
-                throw new ArgumentException("You have to connect it to Account...");
+                this.repo.Create(item);
+                
             }
-            this.repo.Create(item);
+            else { 
+                this.repo.Create(item); 
+            }
+            
         }
 
         public void Update(Transaction item)
