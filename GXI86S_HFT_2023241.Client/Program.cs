@@ -10,18 +10,28 @@ namespace GXI86S_HFT_2023241.Client
         static void Main(string[] args)
         {
             var ctx = new BankDBContext();
-            var repo = new CustomerRepository(ctx);
-            var logic = new CustomerLogic(repo);
+            var repoC = new CustomerRepository(ctx);
+            var repoA = new AccountRepository(ctx);
+            var repoT = new TransactionRepository(ctx);
+
+            var logicC = new CustomerLogic(repoC);
+            var logicA = new AccountLogic(repoA);
+            var logicT = new TransactionLogic(repoT);
 
             Customer a = new Customer()
             {
                 FirstName = "Dom",
                 BirthDate = DateTime.Parse("2002.08.22")
             };
-            logic.Create(a);
-            logic.Delete(10);
+            logicC.Create(a);
 
-            var items = logic.ReadAll();
+            Account b = new Account()
+            {
+                Balance = 1000,
+            };
+            logicA.Create(b);
+
+            var items = logicC.ReadAll();
             ;
         }
     }

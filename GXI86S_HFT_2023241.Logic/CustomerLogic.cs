@@ -26,6 +26,11 @@ namespace GXI86S_HFT_2023241.Logic
             this.repo.Create(item);
         }
 
+        public void Update(Customer item)
+        {
+            this.repo.Update(item);
+        }
+
         public void Delete(int id)
         {
             this.repo.Delete(id);
@@ -45,12 +50,6 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return this.repo.ReadAll();
         }
-
-        public void Update(Customer item)
-        {
-            this.repo.Update(item);
-        }
-
         // non crud
 
         // egy felhasználó költései(lista)

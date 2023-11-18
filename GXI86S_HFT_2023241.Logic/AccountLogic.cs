@@ -17,13 +17,16 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Create(Account item)
         {
-
-
             if (item.Customer == null)
             {
-                throw new ArgumentException("You have to connect it to Client...");     //itt tartok
+                throw new ArgumentException("You have to connect it to Client...");
             }
             this.repo.Create(item);
+        }
+
+        public void Update(Account item)
+        {
+            this.repo.Update(item);
         }
 
         public void Delete(int id)
@@ -45,11 +48,5 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return this.repo.ReadAll();
         }
-
-        public void Update(Account item)
-        {
-            this.repo.Update(item);
-        }
-
     }
 }

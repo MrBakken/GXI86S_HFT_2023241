@@ -17,16 +17,16 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Create(Transaction item)
         {
-            try
+            if (item.Account == null)
             {
-                Update(item);
+                throw new ArgumentException("You have to connect it to Account...");
             }
-            catch (ArgumentException)
-            {
-                throw new ArgumentException("The ID what you give not exist");
-            }
-
             this.repo.Create(item);
+        }
+
+        public void Update(Transaction item)
+        {
+            this.repo.Update(item);
         }
 
         public void Delete(int id)
@@ -48,11 +48,5 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return this.repo.ReadAll();
         }
-
-        public void Update(Transaction item)
-        {
-            this.repo.Update(item);
-        }
-
     }
 }
