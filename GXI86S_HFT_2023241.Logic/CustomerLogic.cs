@@ -211,7 +211,7 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return customer.Accounts
                 .SelectMany(account => account.Transactions)
-                .Where(transaction => transaction.Amount < 0)
+                .Where(transaction => transaction.Amount > 0)
                 .OrderByDescending(transaction => transaction.Date)
                 .FirstOrDefault();
         }

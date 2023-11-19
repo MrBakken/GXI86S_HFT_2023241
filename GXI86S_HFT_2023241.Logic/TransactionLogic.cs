@@ -37,7 +37,7 @@ namespace GXI86S_HFT_2023241.Logic
             }
             else
             {
-                throw new Exception("You have to connect it to Account");
+                throw new ArgumentException("You have to connect it to Account");
             }
             
         }
