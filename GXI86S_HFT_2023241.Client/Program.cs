@@ -106,11 +106,11 @@ namespace GXI86S_HFT_2023241.Client
 
             Console.WriteLine("\n");
 
-            var lastNegativeTransactions = logicC.GetLastNegativeTransactionPerCustomer();
+            var lastNegativeTransactions = logicC.GetLastIncomePerCustomer();
 
             foreach (var entry in lastNegativeTransactions)
             {
-                Console.WriteLine($"Ügyfél neve: {entry.CustomerName}, Utolsó negatív tranzakció összege: {entry.LastNegativeTransactionAmount} {entry.CurrencyType}");
+                Console.WriteLine($"Ügyfél neve: {entry.CustomerName}, Utolsó negatív tranzakció összege: {entry.LastIncomeAmount} {entry.CurrencyType}");
             }
             var items = logicC.ReadAll();
             ;

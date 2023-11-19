@@ -149,7 +149,8 @@ namespace GXI86S_HFT_2023241.Logic
         public IEnumerable<CustomerTotalSpending> GetTotalSpendingLast30Days()
         {
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
-
+            var asd = this.repo.ReadAll();
+            ;
             var totalSpendingLast30Days = this.repo.ReadAll()
                 .Select(customer => new CustomerTotalSpending
                 {
@@ -157,7 +158,7 @@ namespace GXI86S_HFT_2023241.Logic
                     CustomerName = $"{customer.FirstName} {customer.LastName}",
                     TotalSpending = customer.Accounts
                         .SelectMany(account => account.Transactions)
-                        .Where(transaction => transaction.Date >= thirtyDaysAgo && transaction.Amount < 0)
+                        .Where(transaction => transaction.Date >= thirtyDaysAgo && transaction.Amount < 0 )
                         .Sum(transaction => (decimal?)(Convertrer(transaction.Amount, transaction.Account.CurrencyType)) ?? 0)
                 })
                 .ToList();
@@ -190,23 +191,23 @@ namespace GXI86S_HFT_2023241.Logic
             public string CustomerName { get; set; }
             public decimal TotalSpending { get; set; }
         }
-        public IEnumerable<CustomerTransactionSummary> GetLastNegativeTransactionPerCustomer()
+        public IEnumerable<CustomerIncome> GetLastIncomePerCustomer()
         {
             return this.repo.ReadAll()
                 .Select(customer => new
                 {
                     Customer = customer,
-                    LastNegativeTransaction = GetLastNegativeTransaction(customer)
+                    LastNegativeTransaction = GetIncome(customer)
                 })
-                .Select(result => new CustomerTransactionSummary
+                .Select(result => new CustomerIncome
                 {
                     CustomerName = $"{result.Customer.FirstName} {result.Customer.LastName}",
-                    LastNegativeTransactionAmount = result.LastNegativeTransaction != null ? (decimal)result.LastNegativeTransaction.Amount : 0,
+                    LastIncomeAmount = result.LastNegativeTransaction != null ? (decimal)result.LastNegativeTransaction.Amount : 0,
                     CurrencyType = result.LastNegativeTransaction != null ? result.LastNegativeTransaction.Account.CurrencyType.ToString() : "Unknown"
                 });
         }
 
-        private static Transaction GetLastNegativeTransaction(Customer customer)
+        private static Transaction GetIncome(Customer customer)
         {
             return customer.Accounts
                 .SelectMany(account => account.Transactions)
@@ -215,10 +216,10 @@ namespace GXI86S_HFT_2023241.Logic
                 .FirstOrDefault();
         }
 
-        public class CustomerTransactionSummary
+        public class CustomerIncome
         {
             public string CustomerName { get; set; }
-            public decimal LastNegativeTransactionAmount { get; set; }
+            public decimal LastIncomeAmount { get; set; }
             public string CurrencyType { get; set; }
         }
 
