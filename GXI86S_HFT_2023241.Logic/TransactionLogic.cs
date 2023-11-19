@@ -9,7 +9,7 @@ namespace GXI86S_HFT_2023241.Logic
     public class TransactionLogic : ITransactionLogic
     {
         IRepository<Transaction> repo;
-
+        IRepository<Account> Arepo;
         public TransactionLogic(IRepository<Transaction> repo)
         {
             this.repo = repo;
@@ -20,10 +20,15 @@ namespace GXI86S_HFT_2023241.Logic
             if (item.AccountId != null || item.Account != null)
             {
                 this.repo.Create(item);
-                
+
+                var asd =Arepo.Read((int)item.AccountId);
+
+                asd.Balance += item.Amount;
+                Arepo.Update(asd); //nincsen tesztelve
             }
-            else { 
-                this.repo.Create(item); 
+            else
+            {
+                throw new Exception("YOu have to connect it to Account");
             }
             
         }

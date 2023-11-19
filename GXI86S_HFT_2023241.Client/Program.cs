@@ -76,12 +76,13 @@ namespace GXI86S_HFT_2023241.Client
 
             var customerTransactionDetails = logicC.GetCustomerTransactionDetails();
 
-            Console.WriteLine("{0,-20} {1,-20} {2,-20}", "Customer Name", "Total Amount", "Account Type");
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Customer Name", "Account Number", "Total Amount(Eur/Huf)", "Account Type");
             Console.WriteLine(new string('-', 60));
 
             foreach (var detail in customerTransactionDetails)
             {
-                Console.WriteLine("{0,-20} {1,-20:C} {2,-20}", detail.CustomerName, detail.TotalTransactionAmount, detail.AccountType);
+                string TAnountWithCurreny = detail.TotalTransactionAmount.ToString() + " " + detail.CurrencyType.ToString();
+                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", detail.CustomerName,detail.Accountid , TAnountWithCurreny, detail.AccountType);
             }
 
             var items = logicC.ReadAll();

@@ -95,7 +95,7 @@ namespace GXI86S_HFT_2023241.Repository
                 {
                     AccountNumber_ID = 1325313,
                     CustomerId = 1,
-                    CurrencyType = CurrencyEnum.EURO,
+                    CurrencyType = CurrencyEnum.EUR,
                     Balance = 1000,
                     CreationDate = new DateTime(2023, 11, 12),
                     AccountType = AccountTypeEnum.Savings
@@ -105,15 +105,15 @@ namespace GXI86S_HFT_2023241.Repository
             modelBuilder.Entity<Account>().HasData(new Account[]
                 {
                     new Account("1325345$1$HUF$62424$2011.04.02$Current"),
-                    new Account("0131314$1$EURO$4143431$2003.05.12$Savings"),
+                    new Account("0131314$1$EUR$4143431$2003.05.12$Savings"),
                     new Account("0414424$2$HUF$21414$2014.05.19$Current"),
-                    new Account("9238446$2$EURO$14235$2023.05.18$Savings"),
+                    new Account("9238446$2$EUR$14235$2023.05.18$Savings"),
                     new Account("6352719$3$HUF$-43$2014.02.16$Current"),
                     new Account("7458398$3$HUF$142545$2013.05.15$Savings"),
-                    new Account("3467425$4$EURO$2425636$2011.08.28$Current"),
+                    new Account("3467425$4$EUR$2425636$2011.08.28$Current"),
                     new Account("0941567$4$HUF$142356$2011.07.14$Savings"),
                     new Account("1014251$4$HUF$14256346$2016.03.19$Savings"),
-                    new Account("1679531$5$EURO$13563$2011.07.15$Current"),
+                    new Account("1679531$5$EUR$13563$2011.07.15$Current"),
                     new Account("1224551$5$HUF$746321$2012.02.20$Current"),
                     new Account("1352566$5$HUF$246242$2017.05.1$Savings"),
                     });
@@ -135,7 +135,7 @@ namespace GXI86S_HFT_2023241.Repository
                     new Transaction("02$1325313$2022.03.06$-123$Uzsonna"),
                     new Transaction("03$1325313$2022.03.02$14254$Fizetés"),
 
-                    new Transaction("04$0131314$2022.03.02$15334$Euronics"),
+                    new Transaction("04$0131314$2022.03.02$15334$EURnics"),
                     new Transaction("05$0131314$2022.03.02$-153$"),
 
                     new Transaction("06$0414424$2022.03.02$145425$Felújítás"),

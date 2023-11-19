@@ -19,7 +19,7 @@ namespace GXI86S_HFT_2023241.Models
         [Required]
         public CurrencyEnum CurrencyType { get; set; }
 
-        public int Balance { get; set; }
+        public double Balance { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -64,7 +64,7 @@ namespace GXI86S_HFT_2023241.Models
     }
     public enum CurrencyEnum
     {
-        EURO,
+        EUR,
         HUF
     }
 }

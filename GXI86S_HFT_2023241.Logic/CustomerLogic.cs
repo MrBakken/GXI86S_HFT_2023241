@@ -145,7 +145,9 @@ namespace GXI86S_HFT_2023241.Logic
                         {
                             CustomerName = $"{customer.FirstName} {customer.LastName}",
                             TotalTransactionAmount = (decimal)transaction.Amount,
-                            AccountType = account.CurrencyType
+                            CurrencyType = account.CurrencyType,
+                            AccountType = account.AccountType,
+                            Accountid = account.AccountNumber_ID
                         })
                     )
                 );
@@ -156,7 +158,9 @@ namespace GXI86S_HFT_2023241.Logic
         {
             public string CustomerName { get; set; }
             public decimal TotalTransactionAmount { get; set; }
-            public CurrencyEnum AccountType { get; set; }
+            public int Accountid { get; set; }
+            public CurrencyEnum CurrencyType { get; set; }
+            public AccountTypeEnum AccountType { get; set; }
         }
     }
 }
