@@ -1,5 +1,4 @@
-﻿using Castle.Core.Resource;
-using GXI86S_HFT_2023241.Logic.InterfaceLogic;
+﻿using GXI86S_HFT_2023241.Logic.InterfaceLogic;
 using GXI86S_HFT_2023241.Models;
 using GXI86S_HFT_2023241.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -49,22 +48,6 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return this.repo.ReadAll();
         }
-        // non crud
-
-        // egy felhasználó költései(lista)
-
-        //legtöbbett költött kliens
-
-        // Ki költ a Leggyakrabban
-
-        //Átlag költés fiókonként
-
-        // Melyik év/hónapban lett legtöbb új felhasználó.
-
-        //Férfiak Vagy nők költenek e többett
-
-        // SAvings vagy folyószámlán van több pénz
-
 
         public IEnumerable<Customer> GetCustomersWithBirthdayInYear(int year)
         {
@@ -162,6 +145,86 @@ namespace GXI86S_HFT_2023241.Logic
             public CurrencyEnum CurrencyType { get; set; }
             public AccountTypeEnum AccountType { get; set; }
         }
+
+        public IEnumerable<CustomerTotalSpending> GetTotalSpendingLast30Days()
+        {
+            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+
+            var totalSpendingLast30Days = this.repo.ReadAll()
+                .Select(customer => new CustomerTotalSpending
+                {
+                    CustomerId = customer.Id,
+                    CustomerName = $"{customer.FirstName} {customer.LastName}",
+                    TotalSpending = customer.Accounts
+                        .SelectMany(account => account.Transactions)
+                        .Where(transaction => transaction.Date >= thirtyDaysAgo && transaction.Amount < 0)
+                        .Sum(transaction => (decimal?)(Convertrer(transaction.Amount, transaction.Account.CurrencyType)) ?? 0)
+                })
+                .ToList();
+
+            return totalSpendingLast30Days;
+        }
+
+        private decimal? Convertrer(double amount, CurrencyEnum currencyType)
+        {
+            double result = 0;
+            double EurToHuf = 380;
+            switch (currencyType)
+            {
+                case CurrencyEnum.EUR:
+                    result = EurToHuf * amount;
+                    break;
+                case CurrencyEnum.HUF:
+                    result = amount;
+                    break;
+                default:
+
+                    break;
+            }
+            return (decimal?)result;
+        }
+
+        public class CustomerTotalSpending
+        {
+            public int CustomerId { get; set; }
+            public string CustomerName { get; set; }
+            public decimal TotalSpending { get; set; }
+        }
+        public IEnumerable<CustomerTransactionSummary> GetLastNegativeTransactionPerCustomer()
+        {
+            return this.repo.ReadAll()
+                .Select(customer => new
+                {
+                    Customer = customer,
+                    LastNegativeTransaction = GetLastNegativeTransaction(customer)
+                })
+                .Select(result => new CustomerTransactionSummary
+                {
+                    CustomerName = $"{result.Customer.FirstName} {result.Customer.LastName}",
+                    LastNegativeTransactionAmount = result.LastNegativeTransaction != null ? (decimal)result.LastNegativeTransaction.Amount : 0,
+                    CurrencyType = result.LastNegativeTransaction != null ? result.LastNegativeTransaction.Account.CurrencyType.ToString() : "Unknown"
+                });
+        }
+
+        private static Transaction GetLastNegativeTransaction(Customer customer)
+        {
+            return customer.Accounts
+                .SelectMany(account => account.Transactions)
+                .Where(transaction => transaction.Amount < 0)
+                .OrderByDescending(transaction => transaction.Date)
+                .FirstOrDefault();
+        }
+
+        public class CustomerTransactionSummary
+        {
+            public string CustomerName { get; set; }
+            public decimal LastNegativeTransactionAmount { get; set; }
+            public string CurrencyType { get; set; }
+        }
+
+
+
+
     }
 }
 

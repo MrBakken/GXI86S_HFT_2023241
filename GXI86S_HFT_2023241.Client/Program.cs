@@ -19,7 +19,7 @@ namespace GXI86S_HFT_2023241.Client
 
             var logicC = new CustomerLogic(repoC);
             var logicA = new AccountLogic(repoA);
-            var logicT = new TransactionLogic(repoT);
+            var logicT = new TransactionLogic(repoT, repoA);
 
             Customer a = new Customer()
             {
@@ -39,9 +39,16 @@ namespace GXI86S_HFT_2023241.Client
             {
                 Amount = -300,
                 Account = b,
+                Date = DateTime.Parse("2023.11.15")
+            };
+            Transaction c2 = new Transaction()
+            {
+                Amount = -500,
+                Account = b,
+                Date = DateTime.Parse("2023.11.12")
             };
             logicT.Create(c);
-
+            logicT.Create(c2);
 
             var BirthdayInYear =logicC.GetCustomersWithBirthdayInYear(2002);
 
@@ -85,6 +92,26 @@ namespace GXI86S_HFT_2023241.Client
                 Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", detail.CustomerName,detail.Accountid , TAnountWithCurreny, detail.AccountType);
             }
 
+            Console.WriteLine("\n");
+
+            var totalSpendingLast30Days = logicC.GetTotalSpendingLast30Days();
+
+            Console.WriteLine("{0,-15} {1,-20} {2,-20}", "Ügyfél ID", "Ügyfél Név", "Összköltség (HUF)");
+            Console.WriteLine(new string('-', 55));
+
+            foreach (var entry in totalSpendingLast30Days)
+            {
+                Console.WriteLine("{0,-15} {1,-20} {2,-20:C}", entry.CustomerId, entry.CustomerName, entry.TotalSpending);
+            }
+
+            Console.WriteLine("\n");
+
+            var lastNegativeTransactions = logicC.GetLastNegativeTransactionPerCustomer();
+
+            foreach (var entry in lastNegativeTransactions)
+            {
+                Console.WriteLine($"Ügyfél neve: {entry.CustomerName}, Utolsó negatív tranzakció összege: {entry.LastNegativeTransactionAmount} {entry.CurrencyType}");
+            }
             var items = logicC.ReadAll();
             ;
         }
