@@ -1,119 +1,90 @@
-﻿using GXI86S_HFT_2023241.Logic;
-using GXI86S_HFT_2023241.Logic.InterfaceLogic;
+﻿using ConsoleTools;
 using GXI86S_HFT_2023241.Models;
-using GXI86S_HFT_2023241.Repository;
-using Microsoft.EntityFrameworkCore;
 using System;
-using static GXI86S_HFT_2023241.Logic.CustomerLogic;
+using System.Collections.Generic;
 
 namespace GXI86S_HFT_2023241.Client
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static RestService rest;
+        static void Create(string entity)
         {
-            var ctx = new BankDBContext();
-            var repoC = new CustomerRepository(ctx);
-            var repoA = new AccountRepository(ctx);
-            var repoT = new TransactionRepository(ctx);
-
-            var logicC = new CustomerLogic(repoC);
-            var logicA = new AccountLogic(repoA);
-            var logicT = new TransactionLogic(repoT, repoA);
-
-            Customer a = new Customer()
+            if (entity == "Customer")
             {
-                FirstName = "Dom",
-                BirthDate = DateTime.Parse("2002.08.22")
-            };
-            logicC.Create(a);
-
-            Account b = new Account()
-            {
-                Balance = 1000,
-                Customer = a
-            };
-            logicA.Create(b);
-
-            Transaction c = new Transaction()
-            {
-                Amount = -300,
-                Account = b,
-                Date = DateTime.Parse("2023.11.15")
-            };
-            Transaction c2 = new Transaction()
-            {
-                Amount = -500,
-                Account = b,
-                Date = DateTime.Parse("2023.11.12")
-            };
-            logicT.Create(c);
-            logicT.Create(c2);
-
-            var BirthdayInYear =logicC.GetCustomersWithBirthdayInYear(2002);
-
-            foreach (var customer in BirthdayInYear)
-            {
-                Console.WriteLine($"Ügyfél neve: {customer.FirstName} {customer.LastName}, Születésnap: {customer.BirthDate}");
+                Console.Write("Enter Customer Name: ");
+                string name = Console.ReadLine();
+                rest.Post(new Customer() { LastName = name }, "customer");
             }
-
-            Console.WriteLine("\n");
-
-            var customerTransactionInfo = logicC.GetCustomerTransactionInfo();
-
-            foreach (var info in customerTransactionInfo)
+        }
+        static void List(string entity)
+        {
+            if (entity == "Customer")
             {
-                Console.WriteLine($"Ügyfél ID: {info.CustomerId}, Név: {info.FirstName} {info.LastName}, Tranzakciók száma: {info.NumberOfTransactions}");
-            }
-
-            Console.WriteLine("\n");
-
-            var customerAccountInfo = logicC.GetCustomersWithAccountsAndTransactions();
-
-            foreach (var info in customerAccountInfo)
-            {
-                Console.WriteLine($"Ügyfél ID: {info.CustomerId}, Név: {info.FirstName} {info.LastName}");
-
-                foreach (var account in info.Accounts)
+                List<Customer> actors = rest.Get<Customer>("customer");
+                foreach (var item in actors)
                 {
-                    Console.WriteLine($"   Számla: {account.AccountNumber}, Tranzakciók száma: {account.TransactionCount}");
+                    Console.WriteLine(item.Id + ": " + item.LastName + "  Balance: " + item.Email);
                 }
             }
-            Console.WriteLine("\n");
-
-            var customerTransactionDetails = logicC.GetCustomerTransactionDetails();
-
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Customer Name", "Account Number", "Total Amount(Eur/Huf)", "Account Type");
-            Console.WriteLine(new string('-', 60));
-
-            foreach (var detail in customerTransactionDetails)
+            Console.ReadLine();
+        }
+        static void Update(string entity)
+        {
+            if (entity == "Customer")
             {
-                string TAnountWithCurreny = detail.TotalTransactionAmount.ToString() + " " + detail.CurrencyType.ToString();
-                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", detail.CustomerName,detail.Accountid , TAnountWithCurreny, detail.AccountType);
+                Console.Write("Enter Customer's id to update: ");
+                int id = int.Parse(Console.ReadLine());
+                Customer one = rest.Get<Customer>(id, "Customer");
+                Console.Write($"New name [old: {one.Email}]: ");
+                string name = Console.ReadLine();
+                one.Email = name;
+                rest.Put(one, "Customer");
             }
-
-            Console.WriteLine("\n");
-
-            var totalSpendingLast30Days = logicC.GetTotalSpendingLast30Days();
-
-            Console.WriteLine("{0,-15} {1,-20} {2,-20}", "Ügyfél ID", "Ügyfél Név", "Összköltség (HUF)");
-            Console.WriteLine(new string('-', 55));
-
-            foreach (var entry in totalSpendingLast30Days)
+        }
+        static void Delete(string entity)
+        {
+            if (entity == "Customer")
             {
-                Console.WriteLine("{0,-15} {1,-20} {2,-20:C}", entry.CustomerId, entry.CustomerName, entry.TotalSpending);
+                Console.Write("Enter Customer's id to delete: ");
+                int id = int.Parse(Console.ReadLine());
+                rest.Delete(id, "Customer");
             }
+        }
 
-            Console.WriteLine("\n");
+        static void Main(string[] args)
+        {
+            rest = new RestService("http://localhost:53910/", "movie");
 
-            var lastNegativeTransactions = logicC.GetLastIncomePerCustomer();
+            var actorSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Customer"))
+                .Add("Create", () => Create("Customer"))
+                .Add("Delete", () => Delete("Customer"))
+                .Add("Update", () => Update("Customer"))
+                .Add("Exit", ConsoleMenu.Close);
+            
+            var roleSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Account"))
+                .Add("Create", () => Create("Account"))
+                .Add("Delete", () => Delete("Account"))
+                .Add("Update", () => Update("Account"))
+                .Add("Exit", ConsoleMenu.Close);
+            
+            var directorSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("List", () => List("Transaction"))
+                .Add("Create", () => Create("Transaction"))
+                .Add("Delete", () => Delete("Transaction"))
+                .Add("Update", () => Update("Transaction"))
+                .Add("Exit", ConsoleMenu.Close);
 
-            foreach (var entry in lastNegativeTransactions)
-            {
-                Console.WriteLine($"Ügyfél neve: {entry.CustomerName}, Utolsó negatív tranzakció összege: {entry.LastIncomeAmount} {entry.CurrencyType}");
-            }
-            var items = logicC.ReadAll();
-            ;
+            var menu = new ConsoleMenu(args, level: 0)
+                .Add("Customer", () => actorSubMenu.Show())
+                .Add("Roles", () => roleSubMenu.Show())
+                .Add("Directors", () => directorSubMenu.Show())
+                .Add("Exit", ConsoleMenu.Close);
+
+            menu.Show();
+
         }
     }
 }
