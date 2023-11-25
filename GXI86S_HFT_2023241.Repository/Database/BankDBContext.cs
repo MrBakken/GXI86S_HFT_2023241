@@ -132,39 +132,39 @@ namespace GXI86S_HFT_2023241.Repository
 
             modelBuilder.Entity<Transaction>().HasData(new Transaction[]
                 {
-                    new Transaction("02$1325313$2022.03.06$-123$Uzsonna"),
-                    new Transaction("03$1325313$2022.03.02$14254$Fizetés"),
+                    new Transaction("02$1325313$2023.02.28 14:45:20$-123$Uzsonna"),
+                    new Transaction("03$1325313$2023.01.15 08:30:00$14254$Fizetés"),
 
-                    new Transaction("04$0131314$2022.03.02$15334$EURnics"),
-                    new Transaction("05$0131314$2022.03.02$-153$"),
+                    new Transaction("04$0131314$2023.03.10 18:00:45$15334$EURnics"),
+                    new Transaction("05$0131314$2023.04.05 09:15:30$-153$"),
 
-                    new Transaction("06$0414424$2022.03.02$145425$Felújítás"),
-                    new Transaction("07$0414424$2022.03.02$-1334254$"),
+                    new Transaction("06$0414424$2023.05.20 12:00:00$145425$Felújítás"),
+                    new Transaction("07$0414424$2023.06.08 16:30:15$-1334254$"),
 
-                    new Transaction("08$9238446$2022.03.02$14234$Autó"),
+                    new Transaction("08$9238446$2023.07.12 21:45:55$14234$Autó"),
 
-                    new Transaction("09$6352719$2022.03.02$-142354$"),
+                    new Transaction("09$6352719$2023.08.29 10:10:05$-142354$"),
 
-                    new Transaction("10$7458398$2022.03.02$13414$Szerelő"),
-                    new Transaction("11$7458398$2022.03.02$154235$Családnak"),
-                    new Transaction("12$7458398$2022.03.02$-1143$Asztal"),
+                    new Transaction("10$7458398$2023.09.14 13:20:40$13414$Szerelő"),
+                    new Transaction("11$7458398$2023.10.22 17:00:25$154235$Családnak"),
+                    new Transaction("12$7458398$2023.11.09 08:55:50$-1143$Asztal"),
 
-                    new Transaction("13$3467425$2022.03.02$153365$Business"),
+                    new Transaction("13$3467425$2023.12.18 11:11:11$153365$Business"),
 
-                    new Transaction("14$0941567$2022.03.02$6235414$Tuti"),
-                    new Transaction("15$0941567$2022.03.02$-51556$Tippmix"),
-                    new Transaction("16$0941567$2022.03.02$72413$Szárazzsemle"),
+                    new Transaction("14$0941567$2022.01.05 10:15:30$6235414$Tuti"),
+                    new Transaction("15$0941567$2022.02.18 14:30:45$-51556$Tippmix"),
+                    new Transaction("16$0941567$2022.03.20 18:45:15$72413$Szárazzsemle"),
 
-                    new Transaction("17$1014251$2022.03.02$16345$"),
+                    new Transaction("17$1014251$2022.04.08 09:00:30$16345$"),
 
-                    new Transaction("18$1679531$2022.03.02$-62626$valami"),
-                    new Transaction("19$1679531$2022.03.02$-142524$"),
-                    new Transaction("20$1679531$2022.03.02$1454$ruha"),
+                    new Transaction("18$1679531$2022.05.15 12:30:00$-62626$valami"),
+                    new Transaction("19$1679531$2022.06.28 16:15:20$-142524$"),
+                    new Transaction("20$1679531$2023.08.29 10:10:05$1454$ruha"),
 
-                    new Transaction("21$1224551$2022.03.02$-41425$haszontalanság"),
-                    new Transaction("22$1224551$2022.03.02$14352$Roller"),
+                    new Transaction("21$1224551$2022.07.10 21:00:55$-41425$haszontalanság"),
+                    new Transaction("22$1224551$2023.05.20 12:00:00$14352$Roller"),
 
-                    new Transaction("23$1352566$2022.03.02$-13342323$Űrhajó"),
+                    new Transaction("23$1352566$2022.03.02 13:23:23$-13342323$Űrhajó"),
                     });
         }
     }
