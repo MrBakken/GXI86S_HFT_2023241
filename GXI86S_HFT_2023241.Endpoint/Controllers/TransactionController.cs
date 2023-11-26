@@ -3,49 +3,45 @@ using GXI86S_HFT_2023241.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace GXI86S_HFT_2023241.Endpoint.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class TransactionController : ControllerBase
     {
-        ICustomerLogic logic;
+        ITransactionLogic logic;
 
-        public CustomerController(ICustomerLogic logic)
+        public TransactionController(ITransactionLogic logic)
         {
             this.logic = logic;
         }
 
-
-        // GET: api/<CustomerController>
         [HttpGet]
-        public IEnumerable<Customer> ReadAll()
+        public IEnumerable<Transaction> ReadAll()
         {
             return this.logic.ReadAll();
         }
 
-        // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public Customer Read(int id)
+        public Transaction Read(int id)
         {
             return this.logic.Read(id);
         }
 
-        // POST api/<CustomerController>
         [HttpPost]
-        public void Create([FromBody] Customer value)
+        public void Create([FromBody] Transaction value)
         {
             this.logic.Create(value);
         }
 
-        // PUT api/<CustomerController>/5
         [HttpPut]
-        public void Update([FromBody] Customer value)
+        public void Update([FromBody] Transaction value)
         {
             this.logic.Update(value);
         }
 
-        // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

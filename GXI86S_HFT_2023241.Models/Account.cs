@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GXI86S_HFT_2023241.Models
 {
@@ -27,12 +28,16 @@ namespace GXI86S_HFT_2023241.Models
 
         public virtual Customer Customer { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Transaction> Transactions { get; set; }
 
         public Account()
         {
-            Transactions = new List<Transaction>();
+            Transactions = new HashSet<Transaction>();
         }
+
+
+
         public Account(string line)
         {
             string[] split = line.Split('$');

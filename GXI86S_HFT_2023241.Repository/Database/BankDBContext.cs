@@ -63,6 +63,10 @@ namespace GXI86S_HFT_2023241.Repository
                 entity.Property(e => e.Date).IsRequired();
                 entity.Property(e => e.Amount).IsRequired();
                 entity.Property(e => e.Description).HasMaxLength(240);
+
+                entity.HasOne(t => t.Account)
+                    .WithMany(a => a.Transactions)
+                    .HasForeignKey(t => t.AccountId);
             });
 
             modelBuilder.Entity<Customer>().HasData(

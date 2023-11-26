@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Text.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,7 +31,7 @@ namespace GXI86S_HFT_2023241.Models
         [StringLength(10)]
         public Genders Gender { get; set; }
 
-
+        [JsonIgnore]
         public virtual ICollection<Account> Accounts { get; set; }
 
 
