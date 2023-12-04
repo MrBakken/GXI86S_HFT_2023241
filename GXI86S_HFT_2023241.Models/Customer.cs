@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace GXI86S_HFT_2023241.Models
 {
@@ -28,7 +29,7 @@ namespace GXI86S_HFT_2023241.Models
 
         public DateTime BirthDate { get; set; }
 
-        [StringLength(10)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Genders Gender { get; set; }
 
         [JsonIgnore]
@@ -63,7 +64,9 @@ namespace GXI86S_HFT_2023241.Models
     }
     public enum Genders
     {
+        [EnumMember(Value = "Male")]
         Male,
+        [EnumMember(Value = "Female")]
         Female
     }
 

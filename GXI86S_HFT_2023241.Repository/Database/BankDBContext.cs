@@ -36,7 +36,7 @@ namespace GXI86S_HFT_2023241.Repository
                 entity.Property(e => e.Email).HasMaxLength(240);
                 entity.Property(e => e.Phone).HasMaxLength(240);
                 entity.Property(e => e.BirthDate);
-                entity.Property(e => e.Gender).HasConversion<string>();
+                entity.Property(e => e.Gender);
 
                 entity.HasMany(c => c.Accounts)
                         .WithOne(a => a.Customer)
@@ -55,9 +55,9 @@ namespace GXI86S_HFT_2023241.Repository
                         .WithOne(a => a.Account) 
                         .HasForeignKey(a => a.AccountId);
 
-                entity.HasOne(t => t.Customer)
-                    .WithMany(a => a.Accounts)
-                    .HasForeignKey(t => t.CustomerId).OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(t => t.Customer)
+                //    .WithMany(a => a.Accounts)
+                //    .HasForeignKey(t => t.CustomerId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -68,9 +68,9 @@ namespace GXI86S_HFT_2023241.Repository
                 entity.Property(e => e.Amount).IsRequired();
                 entity.Property(e => e.Description).HasMaxLength(240);
 
-                entity.HasOne(t => t.Account)
-                    .WithMany(a => a.Transactions)
-                    .HasForeignKey(t => t.AccountId).OnDelete(DeleteBehavior.Cascade);
+                //entity.HasOne(t => t.Account)
+                //    .WithMany(a => a.Transactions)
+                //    .HasForeignKey(t => t.AccountId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Customer>().HasData(

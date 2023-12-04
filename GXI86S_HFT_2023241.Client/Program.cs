@@ -13,8 +13,8 @@ namespace GXI86S_HFT_2023241.Client
 
         static void Main(string[] args)
         {
-            rest =new RestService("http://localhost:34372", "account");
-
+                rest = new RestService("http://localhost:34372/", "account");
+            
             var CustomerSubMenu = new ConsoleMenu(args, level: 1)
                 .Add("List", () => List("Customer"))
                 .Add("Create", () => Create("Customer"))
@@ -49,18 +49,58 @@ namespace GXI86S_HFT_2023241.Client
 
         static void Create(string entity)       //befejezni
         {
-            
-            
+
             switch (entity)
             {
                 case "Customer":
-                    Console.WriteLine("Enter a new Firstname\nWrite here: ");
-                    string newname = Console.ReadLine();
-                    rest.Post(new Customer() { FirstName = newname }, "customer");
+                    Console.Write("Enter a new Customer's Firstname.\nWrite here: ");
+                    string NewFirstName = Console.ReadLine();
+                    Console.Write("Enter a new Customer's Lastname.\nWrite here: ");
+                    string NewLastName = Console.ReadLine();
+                    Console.Write("Enter a new Customer's email address.\nWrite here: ");
+                    string NewEmail = Console.ReadLine();
+                    Console.Write("Enter a new Customer's Phone number.\nWrite here: ");
+                    string NewPhone = Console.ReadLine();
+                    Console.Write("Enter a new Customer's BirthDate.   Format(1900.01.01)\nWrite here: ");
+                    bool correctformat = false;
+                    DateTime NewBirthDate = DateTime.Parse("1900.01.01");
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            string NewDateToTransfer = Console.ReadLine();
+                            NewBirthDate = DateTime.Parse(NewDateToTransfer);
+                            correctformat = true;
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Nem jó formátum!");
+                        }
+                    }
+                    Console.Write("Enter a new Customer's Gender.  Format:(Male/Female)\nWrite here: ");
+                    correctformat = false;
+                    Genders NewGender = Genders.Female;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            string NewGenderTrans = Console.ReadLine();
+                            NewGender = (Genders)Enum.Parse(typeof(Genders), NewGenderTrans, true);
+
+                            correctformat = true;
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Nem jól írtad!");
+                        }
+
+                    }
+
+                    rest.Post(new Customer() { FirstName = NewFirstName, LastName= NewLastName, Email =NewEmail, Phone = NewPhone, BirthDate = NewBirthDate, Gender =NewGender }, "customer");
                     break;
 
                 case "Account":
-                    Console.WriteLine("Enter a new CurrencyType\nWrite here: ");
+                    Console.WriteLine("Enter a new CurrencyType(EUR\\HUF)\nWrite here: ");
                     CurrencyEnum NewAccCurrency = (CurrencyEnum)Enum.Parse(typeof(CurrencyEnum), Console.ReadLine());
                     rest.Post(new Account() { CreationDate = DateTime.Now, CurrencyType = NewAccCurrency }, "account");
                     break;
