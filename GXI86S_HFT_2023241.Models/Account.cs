@@ -15,15 +15,20 @@ namespace GXI86S_HFT_2023241.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountNumber_ID { get; set; }
 
+        [Required]
         public int? CustomerId { get; set; }
 
         [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CurrencyEnum CurrencyType { get; set; }
 
         public double Balance { get; set; }
 
+        [Required]
         public DateTime CreationDate { get; set; }
 
+        [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public AccountTypeEnum AccountType { get; set; }
 
         public virtual Customer Customer { get; set; }

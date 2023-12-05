@@ -48,7 +48,7 @@ namespace GXI86S_HFT_2023241.Logic
         {
             return this.repo.ReadAll();
         }
-
+        #region OneMoreNonCrud
         public IEnumerable<Customer> GetCustomersWithBirthdayInYear(int year)
         {
             var customersWithBirthday = this.repo.ReadAll()
@@ -57,7 +57,8 @@ namespace GXI86S_HFT_2023241.Logic
 
             return customersWithBirthday;
         }
-
+        #endregion
+        #region NONcrud
         public IEnumerable<CustomerTransactionInfo> GetCustomerTransactionInfo()
         {
             var customerTransactionInfo = this.repo.ReadAll()
@@ -74,14 +75,6 @@ namespace GXI86S_HFT_2023241.Logic
 
             return customerTransactionInfo;
         }
-        public class CustomerTransactionInfo
-        {
-            public int CustomerId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public int NumberOfTransactions { get; set; }
-        }
-
 
         public IEnumerable<CustomerAccountInfo> GetCustomersWithAccountsAndTransactions()
         {
@@ -105,19 +98,6 @@ namespace GXI86S_HFT_2023241.Logic
 
             return customerAccountInfo;
         }
-        public class CustomerAccountInfo
-        {
-            public int CustomerId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public List<AccountInfo> Accounts { get; set; }
-        }
-
-        public class AccountInfo
-        {
-            public int AccountNumber { get; set; }
-            public int TransactionCount { get; set; }
-        }
 
         public IEnumerable<CustomerTransactionDetails> GetCustomerTransactionDetails()
         {
@@ -137,14 +117,6 @@ namespace GXI86S_HFT_2023241.Logic
 
             return query.ToList();
         }
-        public class CustomerTransactionDetails
-        {
-            public string CustomerName { get; set; }
-            public decimal TotalTransactionAmount { get; set; }
-            public int Accountid { get; set; }
-            public CurrencyEnum CurrencyType { get; set; }
-            public AccountTypeEnum AccountType { get; set; }
-        }
 
         public IEnumerable<CustomerTotalSpending> GetTotalSpendingLast30Days()
         {
@@ -158,7 +130,7 @@ namespace GXI86S_HFT_2023241.Logic
                     CustomerName = $"{customer.FirstName} {customer.LastName}",
                     TotalSpending = customer.Accounts
                         .SelectMany(account => account.Transactions)
-                        .Where(transaction => transaction.Date >= thirtyDaysAgo && transaction.Amount < 0 )
+                        .Where(transaction => transaction.Date >= thirtyDaysAgo && transaction.Amount < 0)
                         .Sum(transaction => (decimal?)(Convertrer(transaction.Amount, transaction.Account.CurrencyType)) ?? 0)
                 })
                 .ToList();
@@ -166,6 +138,54 @@ namespace GXI86S_HFT_2023241.Logic
             return totalSpendingLast30Days;
         }
 
+        public IEnumerable<CustomerIncome> GetLastIncomePerCustomer()
+        {
+            return this.repo.ReadAll()
+                .Select(customer => new
+                {
+                    Customer = customer,
+                    LastNegativeTransaction = GetIncome(customer)
+                })
+                .Select(result => new CustomerIncome
+                {
+                    CustomerName = $"{result.Customer.FirstName} {result.Customer.LastName}",
+                    LastIncomeAmount = result.LastNegativeTransaction != null ? (decimal)result.LastNegativeTransaction.Amount : 0,
+                    CurrencyType = result.LastNegativeTransaction != null ? result.LastNegativeTransaction.Account.CurrencyType.ToString() : "Unknown"
+                });
+        }
+        #endregion
+        #region FORnoncrud
+        public class CustomerTransactionInfo
+        {
+            public int CustomerId { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int NumberOfTransactions { get; set; }
+        }
+
+       public class CustomerAccountInfo
+        {
+            public int CustomerId { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<AccountInfo> Accounts { get; set; }
+        }
+
+        public class AccountInfo
+        {
+            public int AccountNumber { get; set; }
+            public int TransactionCount { get; set; }
+        }
+
+        public class CustomerTransactionDetails
+        {
+            public string CustomerName { get; set; }
+            public decimal TotalTransactionAmount { get; set; }
+            public int Accountid { get; set; }
+            public CurrencyEnum CurrencyType { get; set; }
+            public AccountTypeEnum AccountType { get; set; }
+        }
+        
         private decimal? Convertrer(double amount, CurrencyEnum currencyType)
         {
             double result = 0;
@@ -191,22 +211,7 @@ namespace GXI86S_HFT_2023241.Logic
             public string CustomerName { get; set; }
             public decimal TotalSpending { get; set; }
         }
-        public IEnumerable<CustomerIncome> GetLastIncomePerCustomer()
-        {
-            return this.repo.ReadAll()
-                .Select(customer => new
-                {
-                    Customer = customer,
-                    LastNegativeTransaction = GetIncome(customer)
-                })
-                .Select(result => new CustomerIncome
-                {
-                    CustomerName = $"{result.Customer.FirstName} {result.Customer.LastName}",
-                    LastIncomeAmount = result.LastNegativeTransaction != null ? (decimal)result.LastNegativeTransaction.Amount : 0,
-                    CurrencyType = result.LastNegativeTransaction != null ? result.LastNegativeTransaction.Account.CurrencyType.ToString() : "Unknown"
-                });
-        }
-
+        
         private static Transaction GetIncome(Customer customer)
         {
             return customer.Accounts
@@ -222,7 +227,7 @@ namespace GXI86S_HFT_2023241.Logic
             public decimal LastIncomeAmount { get; set; }
             public string CurrencyType { get; set; }
         }
-
+        #endregion
 
 
 

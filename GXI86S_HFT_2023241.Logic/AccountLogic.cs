@@ -19,6 +19,8 @@ namespace GXI86S_HFT_2023241.Logic
         {
             if (item.CustomerId != null || item.Customer != null)
             {
+                item.Balance = 0;
+                item.CreationDate = DateTime.Now;
                 this.repo.Create(item); 
             }
             else

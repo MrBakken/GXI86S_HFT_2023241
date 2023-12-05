@@ -1,9 +1,7 @@
 ﻿using ConsoleTools;
 using GXI86S_HFT_2023241.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace GXI86S_HFT_2023241.Client
 {
@@ -13,8 +11,8 @@ namespace GXI86S_HFT_2023241.Client
 
         static void Main(string[] args)
         {
-                rest = new RestService("http://localhost:34372/", "account");
-            
+            rest = new RestService("http://localhost:34372/", "account");
+
             var CustomerSubMenu = new ConsoleMenu(args, level: 1)
                 .Add("List", () => List("Customer"))
                 .Add("Create", () => Create("Customer"))
@@ -47,7 +45,7 @@ namespace GXI86S_HFT_2023241.Client
 
         }
 
-        static void Create(string entity)       //befejezni
+        static void Create(string entity)
         {
 
             switch (entity)
@@ -57,10 +55,18 @@ namespace GXI86S_HFT_2023241.Client
                     string NewFirstName = Console.ReadLine();
                     Console.Write("Enter a new Customer's Lastname.\nWrite here: ");
                     string NewLastName = Console.ReadLine();
-                    Console.Write("Enter a new Customer's email address.\nWrite here: ");
+                    Console.Write("Enter a new Customer's email address. If you want null wtrie: -\nWrite here: ");
                     string NewEmail = Console.ReadLine();
-                    Console.Write("Enter a new Customer's Phone number.\nWrite here: ");
+                    if (NewEmail == "-")
+                    {
+                        NewEmail = null;
+                    }
+                    Console.Write("Enter a new Customer's Phone number. If you want null wtrie: -\nWrite here: ");
                     string NewPhone = Console.ReadLine();
+                    if (NewPhone == "-")
+                    {
+                        NewPhone = null;
+                    }
                     Console.Write("Enter a new Customer's BirthDate.   Format(1900.01.01)\nWrite here: ");
                     bool correctformat = false;
                     DateTime NewBirthDate = DateTime.Parse("1900.01.01");
@@ -74,7 +80,7 @@ namespace GXI86S_HFT_2023241.Client
                         }
                         catch (Exception)
                         {
-                            Console.WriteLine("Nem jó formátum!");
+                            Console.WriteLine("Wrong input! Try again!");
                         }
                     }
                     Console.Write("Enter a new Customer's Gender.  Format:(Male/Female)\nWrite here: ");
@@ -84,135 +90,571 @@ namespace GXI86S_HFT_2023241.Client
                     {
                         try
                         {
-                            string NewGenderTrans = Console.ReadLine();
-                            NewGender = (Genders)Enum.Parse(typeof(Genders), NewGenderTrans, true);
+                            string NewGenderIn = Console.ReadLine();
+                            NewGender = (Genders)Enum.Parse(typeof(Genders), NewGenderIn, true);
 
                             correctformat = true;
                         }
-                        catch (Exception)
+                        catch (ArgumentException)
                         {
-                            Console.WriteLine("Nem jól írtad!");
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+                    try
+                    {
+
+                        rest.Post(new Customer() { FirstName = NewFirstName, LastName = NewLastName, Email = NewEmail, Phone = NewPhone, BirthDate = NewBirthDate, Gender = NewGender }, "customer");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"The save failed. Cause:  {ex.Message}");
+                    }
+                    break;
+
+                case "Account":
+                    Console.WriteLine("Enter a new Account's Owner(custumerid).\nWrite here: ");
+                    correctformat = false;
+                    int NewCustomerId = 0;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            NewCustomerId = int.Parse(Console.ReadLine());
+                            correctformat = true;
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+
+                    Console.WriteLine("Enter a new Account's CurrencyType(EUR\\HUF)\nWrite here: ");
+                    correctformat = false;
+                    CurrencyEnum NewAccCurrency = CurrencyEnum.HUF;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            string Input = Console.ReadLine().ToUpper();
+                            NewAccCurrency = (CurrencyEnum)Enum.Parse(typeof(CurrencyEnum), Input, true);
+                            correctformat = true;
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+
+                    Console.WriteLine("Enter a new Account's AccountType(Current\\Savings)\nWrite here: ");
+                    correctformat = false;
+                    AccountTypeEnum NewAccountType = AccountTypeEnum.Current;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            string Input = Console.ReadLine();
+                            NewAccountType = (AccountTypeEnum)Enum.Parse(typeof(AccountTypeEnum), Input, true);
+                            correctformat = true;
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+                    try
+                    {
+
+                        rest.Post(new Account() { CustomerId = NewCustomerId, CurrencyType = NewAccCurrency, AccountType = NewAccountType }, "account");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"The save failed. Cause:  {ex.Message}");
+                    }
+                    break;
+
+                case "Transaction":
+                    Console.WriteLine("Enter a witch Account's transaction is it.\nWrite here: ");
+                    correctformat = false;
+                    int NewAccountId = 0;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            NewAccountId = int.Parse(Console.ReadLine());
+                            correctformat = true;
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+
+                    Console.WriteLine("Enter a new Transaction's Amount\nWrite here: ");
+                    correctformat = false;
+                    int NewAmount = 0;
+                    while (!correctformat)
+                    {
+                        try
+                        {
+                            NewAmount = int.Parse(Console.ReadLine());
+                            correctformat = true;
+                        }
+                        catch (ArgumentException)
+                        {
+                            Console.WriteLine("Wrong input! Try again!");
+                        }
+                    }
+
+                    Console.WriteLine("Enter a new Transaction's Description. If you want null wtrie: -\nWrite here: ");
+                    string NewDescription = Console.ReadLine();
+                    if (NewDescription == "-")
+                    {
+                        NewDescription = null;
+                    }
+                    try
+                    {
+                        rest.Post(new Transaction() { AccountId = NewAccountId, Amount = NewAmount, Description = NewDescription }, "transaction");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"The save failed. Cause:  {ex.Message}");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            Console.ReadLine();
+        }
+        static void List(string entity)
+        {
+            try
+            {
+                switch (entity)
+                {
+                    case "Customer":
+
+                        List<Customer> Customers = rest.Get<Customer>("customer");
+
+                        Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", "FirstName", "LastName", "Email", "Phone", "BirthDate", "Gender");
+                        Console.WriteLine(new string('-', 100));
+                        foreach (var item in Customers)
+                        {
+                            Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", item.FirstName, item.LastName, item.Email, item.Phone, item.BirthDate.ToShortDateString(), item.Gender);
+                        }
+                        break;
+
+                    case "Account":
+                        List<Account> Accounts = rest.Get<Account>("account");
+                        Console.WriteLine("{0,-11} | {1,-13} |{2,-20} |{3,-13} |{4,-11}", "CustomerId", "AccountNum", "Balance(Currency)", "AccountType", "CreationDate");
+                        Console.WriteLine(new string('-', 100));
+                        foreach (var item in Accounts)
+                        {
+                            string InCurrencyType = item.Balance.ToString() + " " + item.CurrencyType;
+                            Console.WriteLine("{0,-11} |{1,-13} |{2,-20} |{3,-13} |{4,-11}", item.CustomerId, item.AccountNumber_ID, InCurrencyType, item.AccountType, item.CreationDate.ToShortDateString());
+                        }
+                        break;
+
+                    case "Transaction":
+                        List<Transaction> Transactions = rest.Get<Transaction>("transaction");
+                        Console.WriteLine("{0,-13} |{1,-30} |{2,-13} |{3,-30}", "AccountId", "Date", "Amount", "Description");
+                        Console.WriteLine(new string('-', 100));
+                        foreach (var item in Transactions)
+                        {
+                            Console.WriteLine("{0,-13} |{1,-30} |{2,-13} |{3,-30}", item.AccountId, item.Date, item.Amount, item.Description);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"The save failed. Cause:  {ex.Message}");
+            }
+            
+            Console.ReadLine();
+        }
+        static void Update(string entity)
+        {
+            try
+            {
+                switch (entity)
+                {
+                    case "Customer":
+
+                        Console.Write("Enter Customer's id to update: ");
+                        bool correctformat = false;
+                        int id = 0;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                id = int.Parse(Console.ReadLine());
+
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
                         }
 
-                    }
+                        Customer one = rest.Get<Customer>(id, "customer");
 
-                    rest.Post(new Customer() { FirstName = NewFirstName, LastName= NewLastName, Email =NewEmail, Phone = NewPhone, BirthDate = NewBirthDate, Gender =NewGender }, "customer");
-                    break;
+                        Console.Write($"Enter the new Amount.[old: {one.Id}] Write - if you dont want to modify.\nWrite here: ");
 
-                case "Account":
-                    Console.WriteLine("Enter a new CurrencyType(EUR\\HUF)\nWrite here: ");
-                    CurrencyEnum NewAccCurrency = (CurrencyEnum)Enum.Parse(typeof(CurrencyEnum), Console.ReadLine());
-                    rest.Post(new Account() { CreationDate = DateTime.Now, CurrencyType = NewAccCurrency }, "account");
-                    break;
 
-                case "Transaction":
-                    Console.WriteLine("Enter an Amount\nWrite here: ");
-                    int newAmount = int.Parse(Console.ReadLine());
-                    rest.Post(new Transaction() { Amount = newAmount,Date = DateTime.Now }, "transaction");
-                    break;
 
-                default:
-                    break;
+
+                        Console.Write($"Enter the new Firstname.[old: {one.FirstName}] Write - if you dont want to modify.\nWrite here: ");
+                        string NewFirstName = Console.ReadLine();
+                        if (NewFirstName != "-")
+                        {
+                            one.FirstName = NewFirstName;
+                        }
+
+                        Console.Write($"Enter the new LastName.[old: {one.LastName}] Write - if you dont want to modify.\nWrite here: ");
+                        string NewLastName = Console.ReadLine();
+                        if (NewLastName != "-")
+                        {
+                            one.LastName = NewLastName;
+                        }
+
+                        Console.Write($"Enter the new Email address.[old: {one.Email}] Write - if you dont want to modify.\nWrite here: ");
+                        string NewEmail = Console.ReadLine();
+                        if (NewEmail != "-")
+                        {
+                            one.Email = NewEmail;
+                        }
+
+                        Console.Write($"Enter the new Phone number.[old: {one.Phone}] Write - if you dont want to modify.\nWrite here: ");
+                        string NewPhone = Console.ReadLine();
+                        if (NewPhone != "-")
+                        {
+                            one.Phone = NewPhone;
+                        }
+
+                        Console.Write($"Enter the new BirthDate.[old: {one.BirthDate}] Write - if you dont want to modify. Format(1900.01.01)\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewDateToTransfer = Console.ReadLine();
+                                if (NewDateToTransfer != "-")
+                                {
+                                    one.BirthDate = DateTime.Parse(NewDateToTransfer);
+                                }
+                                correctformat = true;
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+                        Console.Write($"Enter the new Gender.[old: {one.Gender}] Write - if you dont want to modify. Format(Male/Female)\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewGenderIn = Console.ReadLine();
+                                if (NewGenderIn != "-")
+                                {
+                                    one.Gender = (Genders)Enum.Parse(typeof(Genders), NewGenderIn, true);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        rest.Put(one, "customer");
+                        break;
+
+                    case "Account":
+                        Console.Write("Enter Account's id to update: ");
+                        correctformat = false;
+                        int accid = 0;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                accid = int.Parse(Console.ReadLine());
+
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+                        Account accone = rest.Get<Account>(accid, "account");
+
+
+                        Console.Write($"Enter the new Owner(custumerid).[old: {accone.CustomerId}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewCustomerId = Console.ReadLine();
+                                if (NewCustomerId != "-")
+                                {
+                                    accone.CustomerId = int.Parse(NewCustomerId);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new AccountNumber_ID.[old: {accone.AccountNumber_ID}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewAccountNumber_ID = Console.ReadLine();
+                                if (NewAccountNumber_ID != "-")
+                                {
+                                    accone.AccountNumber_ID = int.Parse(NewAccountNumber_ID);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new CurrencyType(EUR\\HUF).[old: {accone.CurrencyType}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewAccCurrency = Console.ReadLine();
+                                if (NewAccCurrency != "-")
+                                {
+                                    accone.CurrencyType = (CurrencyEnum)Enum.Parse(typeof(CurrencyEnum), NewAccCurrency, true);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new AccountType(Current\\Savings).[old: {accone.AccountType}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewAccountType = Console.ReadLine();
+                                if (NewAccountType != "-")
+                                {
+                                    accone.AccountType = (AccountTypeEnum)Enum.Parse(typeof(AccountTypeEnum), NewAccountType, true);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+                        Console.Write($"Enter the new Date.[old: {accone.CreationDate}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewCreationDate = Console.ReadLine();
+                                if (true)
+                                {
+                                    accone.CreationDate = DateTime.Parse(NewCreationDate);
+                                }
+                                correctformat = true;
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new Owner Account(AccountId).[old: {accone.Balance}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewBalance = Console.ReadLine();
+                                if (NewBalance != "-")
+                                {
+                                    accone.Balance = int.Parse(NewBalance);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        rest.Put(accone, "account");
+                        break;
+
+                    case "Transaction":
+                        Console.Write("Enter Transaction's id to update: ");
+                        correctformat = false;
+                        int tranid = 0;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                tranid = int.Parse(Console.ReadLine());
+
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+                        Transaction tranone = rest.Get<Transaction>(tranid, "transaction");
+
+                        Console.Write($"Enter the new Owner Account(AccountId).[old: {tranone.AccountId}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewAccountId = Console.ReadLine();
+                                if (NewAccountId != "-")
+                                {
+                                    tranone.AccountId = int.Parse(NewAccountId);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new Owner Account(AccountId).[old: {tranone.Id}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewId = Console.ReadLine();
+                                if (NewId != "-")
+                                {
+                                    tranone.Id = int.Parse(NewId);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new Amount.[old: {tranone.Amount}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewAmount = Console.ReadLine();
+                                if (NewAmount != "-")
+                                {
+                                    tranone.Amount = int.Parse(NewAmount);
+                                }
+                                correctformat = true;
+                            }
+                            catch (ArgumentException)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        Console.Write($"Enter the new Description-.[old: {tranone.Description}] Write - if you dont want to modify.\nWrite here: ");
+                        string NewDescription = Console.ReadLine();
+                        if (NewDescription != "-")
+                        {
+                            tranone.Description = NewDescription;
+                        }
+
+                        Console.Write($"Enter the new Date.[old: {tranone.Date}] Write - if you dont want to modify.\nWrite here: ");
+                        correctformat = false;
+                        while (!correctformat)
+                        {
+                            try
+                            {
+                                string NewDateToTransfer = Console.ReadLine();
+                                if (true)
+                                {
+                                    tranone.Date = DateTime.Parse(NewDateToTransfer);
+                                }
+                                correctformat = true;
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Wrong input! Try again!");
+                            }
+                        }
+
+                        rest.Put(tranone, "Transaction");
+                        break;
+
+                    default:
+                        break;
+                }
             }
-            Console.ReadLine();
-        }
-    
-        static void List(string entity)         //befejezni
-        {
-            switch (entity)
+            catch (Exception ex)
             {
-                case "Customer":
-                    List<Customer> Customers = rest.Get<Customer>("customer");
-                    Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", "FirstName", "LastName", "Email", "Phone", "BirthDate", "Gender");
-                    Console.WriteLine(new string('-', 100));
-                    foreach (var item in Customers)
-                    {
-                        Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", item.FirstName, item.LastName, item.Email, item.Phone, item.BirthDate.ToShortDateString(), item.Gender);
-                    }
-                    break;
-
-                case "Account":
-                    List<Account> Accounts = rest.Get<Account>("account");
-                    Console.WriteLine("{0,-13} |{1,-20} |{2,-13} |{3,-11}", "AccountNum", "Balance(Currency)", "AccountType", "CreationDate");
-                    Console.WriteLine(new string('-', 100));
-                    foreach (var item in Accounts)
-                    {
-                        string InCurrencyType = item.Balance.ToString() + " " + item.CurrencyType;
-                        Console.WriteLine("{0,-13} |{1,-20} |{2,-13} |{3,-11}", item.AccountNumber_ID, InCurrencyType, item.AccountType, item.CreationDate.ToShortDateString());
-                    }
-                    break;
-
-                case "Transaction":
-                    List<Transaction> Transactions = rest.Get<Transaction>("transaction");
-                    Console.WriteLine("{0,-13} |{1,-30} |{2,-13} |{3,-30}", "AccountId", "Date", "Amount", "Description");
-                    Console.WriteLine(new string('-', 100));
-                    foreach (var item in Transactions)
-                    {
-                        Console.WriteLine("{0,-13} |{1,-30} |{2,-13} |{3,-30}", item.AccountId, item.Date, item.Amount, item.Description);
-                    }
-                    break;
-                default:
-                    break;
+                Console.WriteLine($"The update failed. Cause: {ex.Message}");
             }
+            
             Console.ReadLine();
         }
-        static void Update(string entity)               //befejezni
-        {
-            switch (entity)
-            {
-                case "Customer":
-                    Console.Write("Enter Customer's id to update: ");
-                    int id = int.Parse(Console.ReadLine());
-                    Customer one = rest.Get<Customer>(id, "customer");
-                    Console.Write($"New name [old: {one.LastName}]: ");
-                    string name = Console.ReadLine();
-                    one.LastName = name;
-                    rest.Put(one, "actor");
-                    break;
-
-                case "Account":
-                    Console.Write("Enter Account's id to update: ");
-                    int accid = int.Parse(Console.ReadLine());
-                    Account accone = rest.Get<Account>(accid, "account");
-                    Console.Write($"New accountType [old: {accone.AccountType}] Write[Current/Savings]: ");
-                    AccountTypeEnum acctype = (AccountTypeEnum)Enum.Parse(typeof(AccountTypeEnum), Console.ReadLine());
-                    accone.AccountType = acctype;
-                    rest.Put(accone, "actor");
-                    break;
-
-                case "Transaction":
-                    Console.Write("Enter Transaction's id to update: ");
-                    int tranid = int.Parse(Console.ReadLine());
-                    Transaction tranone = rest.Get<Transaction>(tranid, "transaction");
-                    Console.Write($"New description [old: {tranone.Description}]: ");
-                    string newDescription = Console.ReadLine();
-                    tranone.Description = newDescription;
-                    rest.Put(tranone, "actor");
-                    break;
-
-                default:
-                    break;
-            }
-            Console.ReadLine();
-        }
-        static void Delete(string entity)   //befejezni
+        static void Delete(string entity)
         {
             Console.WriteLine($"Which {entity} ID item do you want to delete?\nWrite here: ");
             int id = int.Parse(Console.ReadLine());
-            switch (entity)
+            try
             {
-                case "Customer":
-                    rest.Delete(id, "customer");
-                    break;
-                case "Account":
-                    rest.Delete(id, "account");
-                    break;
-                case "Transaction":
-                    rest.Delete(id, "transaction");
-                    break;
-                default:
-                    break;
+                switch (entity)
+                {
+                    case "Customer":
+                        rest.Delete(id, "customer");
+                        break;
+                    case "Account":
+                        rest.Delete(id, "account");
+                        break;
+                    case "Transaction":
+                        rest.Delete(id, "transaction");
+                        break;
+                    default:
+                        break;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"The removal failed. Cause: {ex.Message}");
+            }
+            
             Console.ReadLine();
         }
     }

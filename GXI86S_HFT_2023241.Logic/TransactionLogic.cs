@@ -30,7 +30,7 @@ namespace GXI86S_HFT_2023241.Logic
                 {
                      ReadAcc = Arepo.Read(item.Account.AccountNumber_ID); 
                 }
-
+                item.Date = DateTime.Now;
                 ReadAcc.Balance += item.Amount;
                 Arepo.Update(ReadAcc); //nincsen tesztelve
                 this.repo.Create(item);
