@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GXI86S_HFT_2023241.Models;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -99,6 +100,21 @@ namespace GXI86S_HFT_2023241.Client
             }
             return item;
         }
+        public List<T> asd<T>(int id, string endpoint)
+        {
+            List<T> items = new List<T>();
+            HttpResponseMessage response = client.GetAsync(endpoint + "/" + id.ToString()).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+            {
+                items = response.Content.ReadAsAsync<List<T>>().GetAwaiter().GetResult();
+            }
+            else
+            {
+                var error = response.Content.ReadAsAsync<RestExceptionInfo>().GetAwaiter().GetResult();
+                throw new ArgumentException(error.Msg);
+            }
+            return items;
+        }
 
         public void Post<T>(T item, string endpoint)
         {
@@ -140,7 +156,6 @@ namespace GXI86S_HFT_2023241.Client
 
             response.EnsureSuccessStatusCode();
         }
-
     }
     public class RestExceptionInfo
     {

@@ -1,5 +1,6 @@
 ﻿using GXI86S_HFT_2023241.Logic;
 using GXI86S_HFT_2023241.Logic.InterfaceLogic;
+using GXI86S_HFT_2023241.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace GXI86S_HFT_2023241.Endpoint.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class NonCrud : ControllerBase
     {
@@ -18,10 +19,35 @@ namespace GXI86S_HFT_2023241.Endpoint.Controllers
         }
 
         // GET: api/<NonCrud>
-        [HttpGet]
-        public IEnumerable<CustomerLogic.> Get()
+        [HttpGet("{year}")]
+        public IEnumerable<Customer> GetCustomersWithBirthdayInYear(int year)
         {
-            return new string[] { "value1", "value2" };
+            return this.logic.GetCustomersWithBirthdayInYear(year);
+        }
+        [HttpGet]
+        public IEnumerable<CustomerLogic.CustomerTransactionInfo> GetCustomerTransactionInfo()
+        {
+            return this.logic.GetCustomerTransactionInfo();
+        }
+        [HttpGet]
+        public IEnumerable<CustomerLogic.CustomerAccountInfo> GetCustomersWithAccountsAndTransactions()
+        {
+            return this.logic.GetCustomersWithAccountsAndTransactions();
+        }
+        [HttpGet]
+        public IEnumerable<CustomerLogic.CustomerTransactionDetails> GetCustomerTransactionDetails()
+        {
+            return this.logic.GetCustomerTransactionDetails();
+        }
+        [HttpGet]
+        public IEnumerable<CustomerLogic.CustomerTotalSpending> GetTotalSpendingLast30Days()
+        {
+            return this.logic.GetTotalSpendingLast30Days();
+        }
+        [HttpGet]
+        public IEnumerable<CustomerLogic.CustomerIncome> GetLastIncomePerCustomer()
+        {
+            return this.logic.GetLastIncomePerCustomer();
         }
     }
 }

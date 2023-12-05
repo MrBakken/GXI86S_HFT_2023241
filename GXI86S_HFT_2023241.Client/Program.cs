@@ -1,7 +1,9 @@
-﻿using ConsoleTools;
+﻿using Castle.Core.Resource;
+using ConsoleTools;
 using GXI86S_HFT_2023241.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GXI86S_HFT_2023241.Client
 {
@@ -34,11 +36,21 @@ namespace GXI86S_HFT_2023241.Client
                 .Add("Update", () => Update("Transaction"))
                 .Add("Exit", ConsoleMenu.Close);
 
+            var NonCrudSubMenu = new ConsoleMenu(args, level: 1)
+                .Add("Get Customers with Birthday in Year", () => GetCustomersWithBirthdayInYear())
+                .Add("Get Customer Transaction Info", () => GetCustomerTransactionInfo())
+                .Add("Get Customers with Accounts and Transactions", () => GetCustomersWithAccountsAndTransactions())
+                .Add("Get Customer Transaction Details", () => GetCustomerTransactionDetails())
+                .Add("Get Total Spending Last 30 Days", () => GetTotalSpendingLast30Days())
+                .Add("Get Last Income Per Customer", () => GetLastIncomePerCustomer())
+                .Add("Exit", ConsoleMenu.Close);
+
 
             var menu = new ConsoleMenu(args, level: 0)
                 .Add("Customer", () => CustomerSubMenu.Show())
                 .Add("Account", () => AccountSubMenu.Show())
                 .Add("Transaction", () => TransactionSubMenu.Show())
+                .Add("NonCrud", () => NonCrudSubMenu.Show())
                 .Add("Exit", ConsoleMenu.Close);
 
             menu.Show();
@@ -657,5 +669,151 @@ namespace GXI86S_HFT_2023241.Client
             
             Console.ReadLine();
         }
+
+        static void GetCustomersWithBirthdayInYear()
+        {
+            var Customers = rest.asd<Customer>( 2002, "api/NonCrud/GetCustomersWithBirthdayInYear");
+            Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", "FirstName", "LastName", "Email", "Phone", "BirthDate", "Gender");
+            Console.WriteLine(new string('-', 100));
+            foreach (var item in Customers)
+            {
+                Console.WriteLine("{0,-10} |{1,-10} |{2,-24} |{3,-20} |{4,-16} |{5,-7}", item.FirstName, item.LastName, item.Email, item.Phone, item.BirthDate.ToShortDateString(), item.Gender);
+            }
+            Console.ReadLine();
+
+        }
+
+        static void GetCustomerTransactionInfo()
+        {
+            var Customers = rest.Get<CustomerTransactionInfo>("api/NonCrud/GetCustomerTransactionInfo");
+            Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", "CustomerId", "FirstName", "LastName", "NumberOfTransactions" );
+            Console.WriteLine(new string('-', 100));
+            foreach (var item in Customers)
+            {
+                Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", item.CustomerId, item.FirstName, item.LastName, item.NumberOfTransactions);
+            }
+            Console.ReadLine();
+        }
+
+        static void GetCustomersWithAccountsAndTransactions()
+        {
+            var Customers = rest.Get<CustomerTransactionInfo>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", "CustomerId", "FirstName", "LastName", "NumberOfTransactions");
+            Console.WriteLine(new string('-', 100));
+            foreach (var item in Customers)
+            {
+                Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", item.CustomerId, item.FirstName, item.LastName, item.NumberOfTransactions);
+            }
+            Console.ReadLine();
+        }
+
+        static void GetCustomerTransactionDetails()
+        {
+            var Customers = rest.Get<CustomerTransactionDetails>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            Console.WriteLine(new string('-', 100));
+        }
+
+        static void GetTotalSpendingLast30Days()
+        {
+            var Customers = rest.Get<CustomerTotalSpending>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            Console.WriteLine(new string('-', 100));
+        }
+
+        static void GetLastIncomePerCustomer()
+        {
+            var Customers = rest.Get<CustomerIncome>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            Console.WriteLine(new string('-', 100));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region FORnoncrud
+
+
+        public class CustomerAccountInfo
+        {
+            public int CustomerId { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<AccountInfo> Accounts { get; set; }
+        }
+
+        public class CustomerTransactionInfo
+        {
+            public int CustomerId { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public int NumberOfTransactions { get; set; }
+        }
+
+        public class AccountInfo
+        {
+            public int AccountNumber { get; set; }
+            public int TransactionCount { get; set; }
+        }
+
+        public class CustomerTransactionDetails
+        {
+            public string CustomerName { get; set; }
+            public decimal TotalTransactionAmount { get; set; }
+            public int Accountid { get; set; }
+            public CurrencyEnum CurrencyType { get; set; }
+            public AccountTypeEnum AccountType { get; set; }
+        }
+
+        private decimal? Convertrer(double amount, CurrencyEnum currencyType)
+        {
+            double result = 0;
+            double EurToHuf = 380;
+            switch (currencyType)
+            {
+                case CurrencyEnum.EUR:
+                    result = EurToHuf * amount;
+                    break;
+                case CurrencyEnum.HUF:
+                    result = amount;
+                    break;
+                default:
+
+                    break;
+            }
+            return (decimal?)result;
+        }
+
+        public class CustomerTotalSpending
+        {
+            public int CustomerId { get; set; }
+            public string CustomerName { get; set; }
+            public decimal TotalSpending { get; set; }
+        }
+
+        private static Transaction GetIncome(Customer customer)
+        {
+            return customer.Accounts
+                .SelectMany(account => account.Transactions)
+                .Where(transaction => transaction.Amount > 0)
+                .OrderByDescending(transaction => transaction.Date)
+                .FirstOrDefault();
+        }
+
+        public class CustomerIncome
+        {
+            public string CustomerName { get; set; }
+            public decimal LastIncomeAmount { get; set; }
+            public string CurrencyType { get; set; }
+        }
+        #endregion
+
     }
 }

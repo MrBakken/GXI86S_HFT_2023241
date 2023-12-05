@@ -154,21 +154,24 @@ namespace GXI86S_HFT_2023241.Logic
                 });
         }
         #endregion
+
         #region FORnoncrud
+
+
+        public class CustomerAccountInfo
+        {
+            public int CustomerId { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<AccountInfo> Accounts { get; set; }
+        }
+
         public class CustomerTransactionInfo
         {
             public int CustomerId { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public int NumberOfTransactions { get; set; }
-        }
-
-       public class CustomerAccountInfo
-        {
-            public int CustomerId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public List<AccountInfo> Accounts { get; set; }
         }
 
         public class AccountInfo
@@ -185,7 +188,7 @@ namespace GXI86S_HFT_2023241.Logic
             public CurrencyEnum CurrencyType { get; set; }
             public AccountTypeEnum AccountType { get; set; }
         }
-        
+
         private decimal? Convertrer(double amount, CurrencyEnum currencyType)
         {
             double result = 0;
@@ -211,7 +214,7 @@ namespace GXI86S_HFT_2023241.Logic
             public string CustomerName { get; set; }
             public decimal TotalSpending { get; set; }
         }
-        
+
         private static Transaction GetIncome(Customer customer)
         {
             return customer.Accounts
@@ -228,8 +231,6 @@ namespace GXI86S_HFT_2023241.Logic
             public string CurrencyType { get; set; }
         }
         #endregion
-
-
 
     }
 }
