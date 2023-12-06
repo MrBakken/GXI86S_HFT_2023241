@@ -434,7 +434,10 @@ namespace GXI86S_HFT_2023241.Test
             var youngCustomer = new Customer
             {
                 // Set customer properties as needed, e.g., a birthdate for a person under 16
-                BirthDate = DateTime.Now.AddYears(-15)
+                BirthDate = DateTime.Now.AddYears(-15),
+                FirstName = "Testas",
+                LastName = "Testas",
+
             };
 
             // Act & Assert
@@ -456,7 +459,9 @@ namespace GXI86S_HFT_2023241.Test
             var adultCustomer = new Customer
             {
                 // Set customer properties as needed, e.g., a birthdate for a person 16 years or older
-                BirthDate = DateTime.Now.AddYears(-20)
+                BirthDate = DateTime.Now.AddYears(-20),
+                FirstName = "Testas",
+                LastName = "Testas",
             };
 
             // Act

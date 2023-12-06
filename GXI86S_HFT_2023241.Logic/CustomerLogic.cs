@@ -1,7 +1,6 @@
 ﻿using GXI86S_HFT_2023241.Logic.InterfaceLogic;
 using GXI86S_HFT_2023241.Models;
 using GXI86S_HFT_2023241.Repository;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,10 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Create(Customer item)
         {
+            if (item.LastName.Length < 4 || item.FirstName.Length < 4)
+            {
+                throw new ArgumentException("The Cliet name is short... (min5-5 char)");
+            } 
             int age = DateTime.Now.Year - item.BirthDate.Year;
 
             if (age <= 16)
@@ -30,6 +33,12 @@ namespace GXI86S_HFT_2023241.Logic
 
         public void Update(Customer item)
         {
+            int age = DateTime.Now.Year - item.BirthDate.Year;
+
+            if (age <= 16)
+            {
+                throw new ArgumentException("The Cliet is too young...");
+            }
             this.repo.Update(item);
         }
 
@@ -154,7 +163,6 @@ namespace GXI86S_HFT_2023241.Logic
                 });
         }
         #endregion
-
 
         //#region FORnoncrud
 
