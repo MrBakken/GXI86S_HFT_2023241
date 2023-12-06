@@ -25,27 +25,27 @@ namespace GXI86S_HFT_2023241.Endpoint.Controllers
             return this.logic.GetCustomersWithBirthdayInYear(year);
         }
         [HttpGet]
-        public IEnumerable<CustomerLogic.CustomerTransactionInfo> GetCustomerTransactionInfo()
+        public IEnumerable<Models.CustomerTransactionInfo> GetCustomerTransactionInfo()
         {
             return this.logic.GetCustomerTransactionInfo();
         }
         [HttpGet]
-        public IEnumerable<CustomerLogic.CustomerAccountInfo> GetCustomersWithAccountsAndTransactions()
+        public IEnumerable<Models.CustomerAccountInfo> GetCustomersWithAccountsAndTransactions()
         {
             return this.logic.GetCustomersWithAccountsAndTransactions();
         }
         [HttpGet]
-        public IEnumerable<CustomerLogic.CustomerTransactionDetails> GetCustomerTransactionDetails()
+        public IEnumerable<Models.CustomerTransactionDetails> GetCustomerTransactionDetails()
         {
             return this.logic.GetCustomerTransactionDetails();
         }
         [HttpGet]
-        public IEnumerable<CustomerLogic.CustomerTotalSpending> GetTotalSpendingLast30Days()
+        public IEnumerable<Models.CustomerTotalSpending> GetTotalSpendingLast30Days()
         {
             return this.logic.GetTotalSpendingLast30Days();
         }
         [HttpGet]
-        public IEnumerable<CustomerLogic.CustomerIncome> GetLastIncomePerCustomer()
+        public IEnumerable<Models.CustomerIncome> GetLastIncomePerCustomer()
         {
             return this.logic.GetLastIncomePerCustomer();
         }

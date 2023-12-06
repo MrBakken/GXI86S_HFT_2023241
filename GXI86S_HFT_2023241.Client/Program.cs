@@ -697,123 +697,62 @@ namespace GXI86S_HFT_2023241.Client
 
         static void GetCustomersWithAccountsAndTransactions()
         {
-            var Customers = rest.Get<CustomerTransactionInfo>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
-            Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", "CustomerId", "FirstName", "LastName", "NumberOfTransactions");
-            Console.WriteLine(new string('-', 100));
-            foreach (var item in Customers)
+            var customerAccountInfo = rest.Get<CustomerAccountInfo>("api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            foreach (var info in customerAccountInfo)
             {
-                Console.WriteLine("{0,-10} |{1,-15} |{2,-15} |{3,-20}", item.CustomerId, item.FirstName, item.LastName, item.NumberOfTransactions);
+                Console.WriteLine($"Ügyfél ID: {info.CustomerId}, Név: {info.FirstName} {info.LastName}");
+
+                foreach (var account in info.Accounts)
+                {
+                    Console.WriteLine($"   Számla: {account.AccountNumber}, Tranzakciók száma: {account.TransactionCount}");
+                }
             }
             Console.ReadLine();
         }
 
         static void GetCustomerTransactionDetails()
         {
-            var Customers = rest.Get<CustomerTransactionDetails>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
-            Console.WriteLine(new string('-', 100));
+            var customerTransactionDetails = rest.Get<CustomerTransactionDetails>("api/NonCrud/GetCustomerTransactionDetails");
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Customer Name", "Account Number", "Total Amount(Eur/Huf)", "Account Type");
+            Console.WriteLine(new string('-', 60));
+
+            foreach (var detail in customerTransactionDetails)
+            {
+                string TAnountWithCurreny = detail.TotalTransactionAmount.ToString() + " " + detail.CurrencyType.ToString();
+                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", detail.CustomerName, detail.Accountid, TAnountWithCurreny, detail.AccountType);
+            }
+            Console.ReadLine();
         }
 
         static void GetTotalSpendingLast30Days()
         {
-            var Customers = rest.Get<CustomerTotalSpending>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
-            Console.WriteLine(new string('-', 100));
+            var totalSpendingLast30Days = rest.Get<CustomerTotalSpending>("/api/NonCrud/GetTotalSpendingLast30Days");
+            Console.WriteLine("{0,-15} {1,-20} {2,-20}", "Ügyfél ID", "Ügyfél Név", "Összköltség (HUF)");
+            Console.WriteLine(new string('-', 55));
+
+            foreach (var entry in totalSpendingLast30Days)
+            {
+                Console.WriteLine("{0,-15} {1,-20} {2,-20:C}", entry.CustomerId, entry.CustomerName, entry.TotalSpending);
+            }
+            Console.ReadLine();
         }
 
         static void GetLastIncomePerCustomer()
         {
-            var Customers = rest.Get<CustomerIncome>("/api/NonCrud/GetCustomersWithAccountsAndTransactions");
-            Console.WriteLine(new string('-', 100));
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #region FORnoncrud
-
-
-        public class CustomerAccountInfo
-        {
-            public int CustomerId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public List<AccountInfo> Accounts { get; set; }
-        }
-
-        public class CustomerTransactionInfo
-        {
-            public int CustomerId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public int NumberOfTransactions { get; set; }
-        }
-
-        public class AccountInfo
-        {
-            public int AccountNumber { get; set; }
-            public int TransactionCount { get; set; }
-        }
-
-        public class CustomerTransactionDetails
-        {
-            public string CustomerName { get; set; }
-            public decimal TotalTransactionAmount { get; set; }
-            public int Accountid { get; set; }
-            public CurrencyEnum CurrencyType { get; set; }
-            public AccountTypeEnum AccountType { get; set; }
-        }
-
-        private decimal? Convertrer(double amount, CurrencyEnum currencyType)
-        {
-            double result = 0;
-            double EurToHuf = 380;
-            switch (currencyType)
+            var lastNegativeTransactions = rest.Get<CustomerIncome>("api/NonCrud/GetLastIncomePerCustomer");
+            foreach (var entry in lastNegativeTransactions)
             {
-                case CurrencyEnum.EUR:
-                    result = EurToHuf * amount;
-                    break;
-                case CurrencyEnum.HUF:
-                    result = amount;
-                    break;
-                default:
-
-                    break;
+                Console.WriteLine($"Ügyfél neve: {entry.CustomerName}, Utolsó negatív tranzakció összege: {entry.LastIncomeAmount} {entry.CurrencyType}");
             }
-            return (decimal?)result;
+            Console.ReadLine();
         }
 
-        public class CustomerTotalSpending
-        {
-            public int CustomerId { get; set; }
-            public string CustomerName { get; set; }
-            public decimal TotalSpending { get; set; }
-        }
 
-        private static Transaction GetIncome(Customer customer)
-        {
-            return customer.Accounts
-                .SelectMany(account => account.Transactions)
-                .Where(transaction => transaction.Amount > 0)
-                .OrderByDescending(transaction => transaction.Date)
-                .FirstOrDefault();
-        }
 
-        public class CustomerIncome
-        {
-            public string CustomerName { get; set; }
-            public decimal LastIncomeAmount { get; set; }
-            public string CurrencyType { get; set; }
-        }
-        #endregion
+
+
+
+
 
     }
 }
