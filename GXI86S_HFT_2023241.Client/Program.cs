@@ -398,6 +398,7 @@ namespace GXI86S_HFT_2023241.Client
                                 string NewID = Console.ReadLine();
                                 if (NewID != "-")
                                 {
+                                    rest.Get<Customer>(int.Parse(NewID), "customer");
                                     one.Id = int.Parse(NewID);
                                 }
                                 correctformat = true;
@@ -409,6 +410,10 @@ namespace GXI86S_HFT_2023241.Client
                             catch (OverflowException ex)
                             {
                                 Console.WriteLine("The Input wrong: " + ex.Message + "Try Again!");
+                            }
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message} Try another:");
                             }
                         }
 
@@ -571,6 +576,7 @@ namespace GXI86S_HFT_2023241.Client
                                 string NewAccountNumber_ID = Console.ReadLine();
                                 if (NewAccountNumber_ID != "-")
                                 {
+                                    rest.Get<Account>(int.Parse(NewAccountNumber_ID), "account");
                                     accone.AccountNumber_ID = int.Parse(NewAccountNumber_ID);
                                 }
                                 correctformat = true;
@@ -583,7 +589,10 @@ namespace GXI86S_HFT_2023241.Client
                             {
                                 Console.WriteLine($"Error: {ex.Message}. Value for AccountNumber_ID is too large or too small for an integer.");
                             }
-
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message} Try another:");
+                            }
 
                         }
                         #endregion
@@ -652,6 +661,10 @@ namespace GXI86S_HFT_2023241.Client
                             catch (OverflowException ex)
                             {
                                 Console.WriteLine($"Error: {ex.Message}. Date value is too large or too small.");
+                            }
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message} Try another:");
                             }
                         }
                         #endregion
@@ -742,7 +755,7 @@ namespace GXI86S_HFT_2023241.Client
                         }
                         #endregion
                         #region tranone.Id
-                        Console.Write($"Enter the new Owner Account(AccountId).[old: {tranone.Id}] Write - if you dont want to modify.\nWrite here: ");
+                        Console.Write($"Enter the new Id.[old: {tranone.Id}] Write - if you dont want to modify.\nWrite here: ");
                         correctformat = false;
                         while (!correctformat)
                         {
@@ -751,6 +764,10 @@ namespace GXI86S_HFT_2023241.Client
                                 string NewId = Console.ReadLine();
                                 if (NewId != "-")
                                 {
+                                    var asd = rest.Get<Transaction>(int.Parse(NewId), "transaction");
+
+                                    rest.Get<Transaction>(tranid, "transaction");
+                                    
                                     tranone.Id = int.Parse(NewId);
                                 }
                                 correctformat = true;
@@ -762,6 +779,10 @@ namespace GXI86S_HFT_2023241.Client
                             catch (OverflowException ex)
                             {
                                 Console.WriteLine("The Input is incorrect: " + ex.Message + " Try Again!");
+                            }
+                            catch (ArgumentException ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message} Try another:");
                             }
                         }
                         #endregion
@@ -810,7 +831,7 @@ namespace GXI86S_HFT_2023241.Client
                             try
                             {
                                 string NewDateToTransfer = Console.ReadLine();
-                                if (true)
+                                if (NewDateToTransfer != "-")
                                 {
                                     tranone.Date = DateTime.Parse(NewDateToTransfer);
                                 }

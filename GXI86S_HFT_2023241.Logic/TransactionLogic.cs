@@ -32,7 +32,7 @@ namespace GXI86S_HFT_2023241.Logic
                 }
                 item.Date = DateTime.Now;
                 ReadAcc.Balance += item.Amount;
-                Arepo.Update(ReadAcc); //nincsen tesztelve
+                Arepo.Update(ReadAcc);
                 this.repo.Create(item);
             }
             else
@@ -55,7 +55,7 @@ namespace GXI86S_HFT_2023241.Logic
         public Transaction Read(int id)
         {
             var custumer = this.repo.Read(id);
-            return custumer == null ? throw new ArgumentException("Account is not exist...") : this.repo.Read(id);
+            return custumer == null ? throw new ArgumentException("Transaction is not exist...") : this.repo.Read(id);
         }
 
         public IQueryable<Transaction> ReadAll()
