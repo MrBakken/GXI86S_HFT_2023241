@@ -1,3 +1,4 @@
+using GXI86S_HFT_2023241.Endpoint.Services;
 using GXI86S_HFT_2023241.Logic;
 using GXI86S_HFT_2023241.Logic.InterfaceLogic;
 using GXI86S_HFT_2023241.Models;
@@ -42,6 +43,8 @@ namespace GXI86S_HFT_2023241.Endpoint
             services.AddTransient<IAccountLogic, AccountLogic>();
             services.AddTransient<ITransactionLogic, TransactionLogic>();
 
+            services.AddSignalR();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -73,6 +76,7 @@ namespace GXI86S_HFT_2023241.Endpoint
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/hub");
             });
         }
     }
