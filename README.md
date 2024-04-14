@@ -1,4 +1,5 @@
 Bank Database with REST API
+
 Overview
 This project aims to develop a bank database system with a RESTful API for managing banking operations. The system will be built using SOLID principles, with a WPF client endpoint for interacting with the database.
 
