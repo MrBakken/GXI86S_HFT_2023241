@@ -9,50 +9,13 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <local:MainWindowViewModel />
-    </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <ListBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding FirstName}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <StackPanel Grid.Column="1">
-            <Label
-                Padding="10"
-                Background="LightBlue"
-                Content="Name" />
-            <TextBox
-                Margin="0,0,0,30"
-                Padding="10"
-                Text="{Binding SelectedCustomer.FirstName}" />
-            <Button
-                Margin="10"
-                Padding="10"
-                Command="{Binding CreateCustomerCommand}"
-                Content="Create Customer" />
-            <Button
-                Margin="10"
-                Padding="10"
-                Command="{Binding DeleteCustomerCommand}"
-                Content="Delete Customer" />
-            <Button
-                Margin="10"
-                Padding="10"
-                Command="{Binding UpdateCustomerCommand}"
-                Content="Update Customer" />
-            <Label
-                HorizontalContentAlignment="Center"
-                Content="{Binding ErrorMessage}"
-                FontSize="18"
-                Foreground="Red" />
+        <StackPanel>
+            <Button Click="Button_Click" Content="Customer" />
+            <Button Click="Button_Click" Content="Accounts" />
+            <Button Click="Button_Click" Content="Transactions" />
+            <Button Click="Button_Click" Content="CRUD" />
         </StackPanel>
+
     </Grid>
 </Window>

@@ -1,0 +1,92 @@
+﻿<Window
+    x:Class="GXI86S_HFT_2023241.WPFClient.CustomerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GXI86S_HFT_2023241.WPFClient"
+    xmlns:vm="clr-namespace:GXI86S_HFT_2023241.WPFClient.ViewMoidels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Bank"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:CustomerWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+
+        <!--  ListBox for displaying customers  -->
+        <ListBox ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--  Editor section for editing selected customer  -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Text="First Name:" />
+                <TextBox Margin="5" Text="{Binding SelectedCustomer.FirstName}"  Width="150" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="Last Name:" />
+                <TextBox Margin="5" Text="{Binding SelectedCustomer.LastName}" Width="150" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="Birth Date:" />
+                <DatePicker Margin="5" SelectedDate="{Binding SelectedCustomer.BirthDate}" Width="120"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <TextBlock Text="Gender:" />
+                <TextBox Margin="5" Text="{Binding SelectedCustomer.Gender}" Width="150" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <TextBlock Text="Phone:" />
+                <TextBox Margin="5" Text="{Binding SelectedCustomer.Phone}" Width="150" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <TextBlock Text="Email:" />
+                <TextBox Margin="5" Text="{Binding SelectedCustomer.Email}" Width="150" />
+            </StackPanel>
+            <!--  Buttons for CRUD operations  -->
+            <Button
+                Grid.Row="6"
+                Command="{Binding CreateCustomerCommand}"
+                Content="Add" />
+            <Button
+                Grid.Row="7"
+                Command="{Binding UpdateCustomerCommand}"
+                Content="Update" />
+            <Button
+                Grid.Row="8"
+                Command="{Binding DeleteCustomerCommand}"
+                Content="Delete" />
+            <Label Grid.Row="9" Content="{Binding ErrorMessage}" FontSize="18" Foreground="Red" HorizontalContentAlignment="Center" />
+        </Grid>
+    </Grid>
+</Window>

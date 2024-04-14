@@ -37,7 +37,6 @@ namespace GXI86S_HFT_2023241.Repository
                 entity.Property(e => e.Phone).HasMaxLength(240);
                 entity.Property(e => e.BirthDate);
                 entity.Property(e => e.Gender);
-
                 entity.HasMany(c => c.Accounts)
                         .WithOne(a => a.Customer)
                         .HasForeignKey(a => a.CustomerId);

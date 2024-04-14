@@ -1,17 +1,19 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using GXI86S_HFT_2023241.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
-using GXI86S_HFT_2023241.Models;
-namespace GXI86S_HFT_2023241.WPFClient
+using System.Windows.Input;
+
+
+namespace GXI86S_HFT_2023241.WPFClient.ViewMoidels
 {
-    public class MainWindowViewModel : ObservableRecipient
+    public class CustomerWindowViewModel : ObservableRecipient
     {
         private string errorMessage;
 
@@ -23,6 +25,7 @@ namespace GXI86S_HFT_2023241.WPFClient
 
 
         public RestCollection<Customer> Customers { get; set; }
+
 
         private Customer selectedCustomer;
 
@@ -36,6 +39,11 @@ namespace GXI86S_HFT_2023241.WPFClient
                     selectedCustomer = new Customer()
                     {
                         FirstName = value.FirstName,
+                        LastName = value.LastName,
+                        Gender = value.Gender,
+                        BirthDate = value.BirthDate,
+                        Email = value.Email,
+                        Phone = value.Phone,
                         Id = value.Id,
 
                     };
@@ -62,23 +70,25 @@ namespace GXI86S_HFT_2023241.WPFClient
         }
 
 
-        public MainWindowViewModel()
+        public CustomerWindowViewModel()
         {
             if (!IsInDesignMode)
             {
                 Customers = new RestCollection<Customer>("http://localhost:34372/", "customer", "hub");
                 CreateCustomerCommand = new RelayCommand(() =>
                 {
-                    Customers.Add(new Customer()
+                    var customer = new Customer()
                     {
                         FirstName = selectedCustomer.FirstName,
-                        LastName = "Valaki",
-                        BirthDate = DateTime.Parse("1999.01.01"),
-                        Gender = Genders.Male,
-                        Phone = "",
-                        Email = "",
-                    });
+                        LastName = selectedCustomer.LastName,
+                        BirthDate = selectedCustomer.BirthDate,
+                        Gender = selectedCustomer.Gender,
+                        Phone = selectedCustomer.Phone,
+                        Email = selectedCustomer.Email
+                    };
+                    Customers.Add(customer);
                 });
+
 
                 UpdateCustomerCommand = new RelayCommand(() =>
                 {
@@ -96,6 +106,7 @@ namespace GXI86S_HFT_2023241.WPFClient
                 DeleteCustomerCommand = new RelayCommand(() =>
                 {
                     Customers.Delete(SelectedCustomer.Id);
+                    SelectedCustomer = Customers.First();
                 },
                 () =>
                 {

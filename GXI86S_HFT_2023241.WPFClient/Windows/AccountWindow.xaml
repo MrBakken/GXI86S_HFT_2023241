@@ -1,0 +1,117 @@
+﻿<Window
+    x:Class="GXI86S_HFT_2023241.WPFClient.AccountWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GXI86S_HFT_2023241.WPFClient"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:GXI86S_HFT_2023241.WPFClient.ViewMoidels"
+    Title="AccountWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:AccountWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="300" />
+        </Grid.ColumnDefinitions>
+
+        <!--  ListBox for displaying customers  -->
+        <ListBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding AccountNumber_ID}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--  Editor section for editing selected customer  -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Text="AccountNumber_ID:" />
+                <TextBox
+                    Width="150"
+                    Margin="5"
+                    Text="{Binding SelectedAccount.AccountNumber_ID}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock Text="CustomerId: (C)" />
+                <TextBox
+                    Width="150"
+                    Margin="5"
+                    Text="{Binding SelectedAccount.CustomerId}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="AccountType: (C)" />
+                <TextBox
+                    Width="150"
+                    Margin="5"
+                    Text="{Binding SelectedAccount.AccountType}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <TextBlock Text="CreationDate:" />
+                <DatePicker
+                    Width="120"
+                    Margin="5"
+                    SelectedDate="{Binding SelectedAccount.CreationDate}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <TextBlock Text="CurrencyType: (C)" />
+                <TextBox
+                    Width="150"
+                    Margin="5"
+                    Text="{Binding SelectedAccount.CurrencyType}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <TextBlock Text="Balance:" />
+                <TextBox
+                    Width="150"
+                    Margin="5"
+                    Text="{Binding SelectedAccount.Balance}" />
+            </StackPanel>
+
+
+            <!--  Buttons for CRUD operations  -->
+            <Button
+                Grid.Row="6"
+                Command="{Binding CreateAccountCommand}"
+                Content="Add" />
+            <Button
+                Grid.Row="7"
+                Command="{Binding UpdateAccountCommand}"
+                Content="Update" />
+            <Button
+                Grid.Row="8"
+                Command="{Binding DeleteAccountCommand}"
+                Content="Delete" />
+            <Label
+                Grid.Row="9"
+                HorizontalContentAlignment="Center"
+                Content="{Binding ErrorMessage}"
+                FontSize="18"
+                Foreground="Red" />
+        </Grid>
+    </Grid>
+</Window>

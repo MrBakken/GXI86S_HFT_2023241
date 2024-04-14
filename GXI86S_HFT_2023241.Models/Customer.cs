@@ -35,7 +35,6 @@ namespace GXI86S_HFT_2023241.Models
         public Genders Gender { get; set; }
 
         [JsonIgnore]
-        [Required]
         public virtual ICollection<Account> Accounts { get; set; }
 
 
