@@ -4,9 +4,54 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GXI86S_HFT_2023241.WPFClient.Windows"
+         xmlns:vm="clr-namespace:GXI86S_HFT_2023241.WPFClient.ViewMoidels"
         mc:Ignorable="d"
-        Title="CrudWindow" Height="450" Width="800">
+        Title="CrudWindow" Height="900" Width="1600">
+    <Window.DataContext>
+        <vm:CrudWindowViewModel />
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding CustomerTransactionInfos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="1" ItemsSource="{Binding CustomerAccountInfos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="2" ItemsSource="{Binding CustomerTransactionDetails}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="3" ItemsSource="{Binding CustomerTotalSpendings}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Column="4" ItemsSource="{Binding CustomerIncomes}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding FirstName }" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
