@@ -10,14 +10,21 @@ namespace GXI86S_HFT_2023241.WPFClient.ViewMoidels
 {
     public class CrudWindowViewModel : ObservableRecipient
     {
-        public RestCollection<CustomerTransactionInfo> CustomerTransactionInfos { get; set; } //CustomerTransactionInfo
-        public RestCollection<CustomerAccountInfo> CustomerAccountInfos { get; set; }
-        public RestCollection<CustomerTransactionDetails> CustomerTransactionDetails { get; set; }
-        public RestCollection<CustomerTotalSpending> CustomerTotalSpendings { get; set; }
-        public RestCollection<CustomerIncome> CustomerIncomes { get; set; }
+        public List<CustomerTransactionInfo> CustomerTransactionInfos { get; set; } //CustomerTransactionInfo
+        public List<CustomerAccountInfo> CustomerAccountInfos { get; set; }
+        public List<CustomerTransactionDetails> CustomerTransactionDetails { get; set; }
+        public List<CustomerTotalSpending> CustomerTotalSpendings { get; set; }
+        public List<CustomerIncome> CustomerIncomes { get; set; }
 
         public CrudWindowViewModel() {
-            CustomerTransactionInfos = new RestCollection<CustomerTransactionInfo>("http://localhost:34372/api/NonCrud/", "GetCustomerTransactionInfo");
+
+            var noncrud = new RestService("http://localhost:34372/");
+            CustomerTransactionInfos = noncrud.Get<CustomerTransactionInfo>("api/NonCrud/GetCustomerTransactionInfo");
+            CustomerAccountInfos = noncrud.Get<CustomerAccountInfo>("api/NonCrud/GetCustomersWithAccountsAndTransactions");
+            CustomerTransactionDetails = noncrud.Get<CustomerTransactionDetails>("api/NonCrud/GetCustomerTransactionDetails");
+            CustomerTotalSpendings = noncrud.Get<CustomerTotalSpending>("api/NonCrud/GetTotalSpendingLast30Days");
+            CustomerIncomes = noncrud.Get<CustomerIncome>("api/NonCrud/GetLastIncomePerCustomer");
+
             //CustomerAccountInfos = new RestCollection<CustomerAccountInfo>("http://localhost:34372/", "api/NonCrud/GetCustomersWithAccountsAndTransactions");
             //CustomerTransactionDetails = new RestCollection<CustomerTransactionDetails>("http://localhost:34372/", "api/NonCrud/GetCustomerTransactionDetails");
             //CustomerTotalSpendings = new RestCollection<CustomerTotalSpending>("http://localhost:34372/", "api/NonCrud/GetTotalSpendingLast30Days");

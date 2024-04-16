@@ -1,16 +1,23 @@
-﻿<Window x:Class="GXI86S_HFT_2023241.WPFClient.Windows.CrudWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GXI86S_HFT_2023241.WPFClient.Windows"
-         xmlns:vm="clr-namespace:GXI86S_HFT_2023241.WPFClient.ViewMoidels"
-        mc:Ignorable="d"
-        Title="CrudWindow" Height="900" Width="1600">
+﻿<Window
+    x:Class="GXI86S_HFT_2023241.WPFClient.Windows.CrudWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GXI86S_HFT_2023241.WPFClient.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:GXI86S_HFT_2023241.WPFClient.ViewMoidels"
+    Title="CrudWindow"
+    Width="1600"
+    Height="900"
+    mc:Ignorable="d">
     <Window.DataContext>
         <vm:CrudWindowViewModel />
     </Window.DataContext>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20*" />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -18,38 +25,170 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" ItemsSource="{Binding CustomerTransactionInfos}">
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            Content="CustomerTransactionInfos"
+            FontSize="16"
+            FontWeight="Bold" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Content="CustomerAccountInfos"
+            FontSize="16"
+            FontWeight="Bold" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            Content="CustomerTransactionDetails"
+            FontSize="16"
+            FontWeight="Bold" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="3"
+            HorizontalAlignment="Center"
+            Content="CustomerTotalSpendings"
+            FontSize="16"
+            FontWeight="Bold" />
+        <Label
+            Grid.Row="0"
+            Grid.Column="4"
+            HorizontalAlignment="Center"
+            Content="CustomerIncomes"
+            FontSize="16"
+            FontWeight="Bold" />
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="0"
+            ItemsSource="{Binding CustomerTransactionInfos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding FirstName }" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Firtst Name:" />
+                            <Label Content="{Binding FirstName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Last Name:" />
+                            <Label Content="{Binding LastName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Number Of Transactions:" />
+                            <Label Content="{Binding NumberOfTransactions}" FontWeight="Bold" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Column="1" ItemsSource="{Binding CustomerAccountInfos}">
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="1"
+            ItemsSource="{Binding CustomerAccountInfos}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding FirstName }" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Firtst Name:" />
+                            <Label Content="{Binding FirstName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Last Name:" />
+                            <Label Content="{Binding LastName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Accounts:" />
+                            <ListBox ItemsSource="{Binding Accounts}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="Account Number:" />
+                                                <Label Content="{Binding AccountNumber}" FontWeight="Bold" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="Transaction Count:" />
+                                                <Label Content="{Binding TransactionCount}" FontWeight="Bold" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Column="2" ItemsSource="{Binding CustomerTransactionDetails}">
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="2"
+            ItemsSource="{Binding CustomerTransactionDetails}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding FirstName }" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Fullname: " />
+                            <Label Content="{Binding CustomerName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Accountid: " />
+                            <Label Content="{Binding Accountid}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Total Transaction Amount: " />
+                            <Label Content="{Binding TotalTransactionAmount}" FontWeight="Bold" />
+                            <Label Content="{Binding CurrencyType}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Account Type: " />
+                            <Label Content="{Binding AccountType}" FontWeight="Bold" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Column="3" ItemsSource="{Binding CustomerTotalSpendings}">
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="3"
+            ItemsSource="{Binding CustomerTotalSpendings}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding FirstName }" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="CustomerId: " />
+                            <Label Content="{Binding CustomerId}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Full Name: " />
+                            <Label Content="{Binding CustomerName}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="TotalSpending: " />
+                            <Label Content="{Binding TotalSpending}" FontWeight="Bold" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Column="4" ItemsSource="{Binding CustomerIncomes}">
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="4"
+            ItemsSource="{Binding CustomerIncomes}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding FirstName }" />
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="CustomerId: " />
+                            <Label Content="{Binding CustomerId}" FontWeight="Bold" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Last Income Amount: " />
+                            <Label Content="{Binding LastIncomeAmount}" FontWeight="Bold" />
+                            <Label Content="{Binding CurrencyType}" FontWeight="Bold" />
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
