@@ -69,6 +69,15 @@ namespace GXI86S_HFT_2023241.Endpoint
                 var response = new { Msg = exception.Message };
                 await context.Response.WriteAsJsonAsync(response);
             }));
+
+            app.UseCors(x => x
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("http://localhost:51379"));
+
+
+
             app.UseRouting();
 
             app.UseAuthorization();
