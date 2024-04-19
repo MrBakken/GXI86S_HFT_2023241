@@ -27,7 +27,7 @@ namespace GXI86S_HFT_2023241.JSClient
             }
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", async context =>
