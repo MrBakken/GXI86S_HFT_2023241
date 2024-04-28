@@ -4,11 +4,56 @@
     <meta charset="utf-8" />
     <title>Customer UI</title>
     <link rel="stylesheet" href="style.css" />
-    
+    <style>
+        /* Styles for navigation */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+            li:last-child {
+                margin-right: 0;
+            }
+
+        a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+        body {
+            background-color: #222;
+            color: #fff; /* Set text color to white for better contrast */
+            font-family: Arial, sans-serif; /* Set a font family */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+    </style>
 </head>
 <body>
-    <script src="script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <nav>
+        <ul>
+            <li><a href="/index.html">Custumers</a></li>
+            <li><a href="/account.html">Accounts</a></li>
+            <li><a href="/Transaction.html">Transactions</a></li>
+            <li><a href="/NonCrud.html">NonCruds</a></li>
+        </ul>
+    </nav>
 
     <h1>Customer Catalog</h1>
     <div id="formdiv">
@@ -24,6 +69,31 @@
         <button type="button" onclick="create()">Add Customer</button>
     </div>
 
+    <h2>Customer Updater</h2>
+    <div id="updateformdiv">
+        <label>Firstname</label>
+        <input type="text" id="firstnameupdate" />
+
+        <label>Lastname</label>
+        <input type="text" id="lastnameupdate" />
+
+        <label>Email</label>
+        <input type="email" id="emailupdate" />
+
+        <label>Gender:</label>
+        <label>Male</label>
+        <input type="radio" id="male" name="gender" value="Male">
+        <label>Female</label>
+        <input type="radio" id="female" name="gender" value="Female">
+
+        <label>Birthdate</label>
+        <input type="date" id="birthupdate" />
+
+        <label>Phone</label>
+        <input type="tel" id="phoneupdate" />
+
+        <button type="button" onclick="update()">Update Customer</button>
+    </div>
 
     <table>
         <thead>
@@ -35,12 +105,14 @@
                 <th>Gender</th>
                 <th>BirthDate</th>
                 <th>Phone</th>
-                <th>Delete Action</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="resultarea">
         </tbody>
     </table>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

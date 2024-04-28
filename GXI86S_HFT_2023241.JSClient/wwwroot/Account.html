@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Accounts</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Styles for navigation */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+            li:last-child {
+                margin-right: 0;
+            }
+
+        a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        body {
+            background-color: #222;
+            color: #fff; /* Set text color to white for better contrast */
+            font-family: Arial, sans-serif; /* Set a font family */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/index.html">Custumers</a></li>
+            <li><a href="/account.html">Accounts</a></li>
+            <li><a href="/Transaction.html">Transactions</a></li>
+            <li><a href="/NonCrud.html">NonCruds</a></li>
+        </ul>
+    </nav>
+    <h1>Account Catalog</h1>
+    <div id="formdiv">
+
+        <label>Customer Id</label>
+        <input type="number" id="customerIdcreate" />
+
+        <label>CurrencyType</label>
+        <div>
+            <label>EUR</label>
+            <input type="radio" id="eur" name="currencytype" value="EUR">
+            <label>HUF</label>
+            <input type="radio" id="huf" name="currencytype" value="HUF">
+        </div>
+
+        <label>AccountType</label>
+        <div>
+            <label>Savings</label>
+            <input type="radio" id="savings" name="accounttype" value="Savings">
+            <label>Current</label>
+            <input type="radio" id="current" name="accounttype" value="Current">
+        </div>
+
+        <button type="button" onclick="create()">Add Account</button>
+    </div>
+
+    <h2>Account Updater</h2>
+    <div id="updateformdiv">
+        <label>Customer Id</label>
+        <input type="number" id="customeridupdate" />
+
+        <label>AccountType</label>
+        <label>Savings</label>
+        <input type="radio" id="savingsupdate" name="accounttype" value="Savings">
+        <label>Current</label>
+        <input type="radio" id="currentupdate" name="accounttype" value="Current">
+
+        <label>Balance</label>
+        <input type="text" id="balaceupdate" />
+
+        <label>CreationDate</label>
+        <input type="date" id="creationdateupdate" />
+
+        <label>CurrencyType</label>
+        <label>EUR</label>
+        <input type="radio" id="eurupdate" name="currencytype" value="EUR">
+        <label>HUF</label>
+        <input type="radio" id="hufupdate" name="currencytype" value="HUF">
+
+
+        <button type="button" onclick="update()">Update Account</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>AccountNumber_ID</th>
+                <th>Customer Id</th>
+                <th>CurrencyType</th>
+                <th>Balance</th>
+                <th>CreationDate</th>
+                <th>AccountType</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="resultarea">
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="accscript.js"></script>
+</body>
+</html>
