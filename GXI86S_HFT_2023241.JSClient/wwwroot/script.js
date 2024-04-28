@@ -20,12 +20,15 @@ function display() {
 }
 
     function create() {
-        let name = document.getElementById('actorname').value;
+        let firstname = document.getElementById('firstname').value;
+        let lastname = document.getElementById('lastname').value;
+        let birth = document.getElementById('birth').value;
         fetch('http://localhost:34372/Customer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', },
             body: JSON.stringify(
-                { firstName: "Almaada", lastName: "Almaada" })})
+                { firstName: firstname, lastName: lastname, birthDate: birth })
+        })
             .then(response => response)
             .then(data => {console.log('Success:', data);})
             .catch((error) => { console.error('Errorvan:', error); });
