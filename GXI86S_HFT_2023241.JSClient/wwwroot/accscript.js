@@ -1,4 +1,4 @@
-﻿let accounts = [];
+﻿let transactions = [];
 let connection = null;
 let accountIdToUpdate = 1;
 let genderToUpdate = "";
@@ -7,7 +7,7 @@ setupSignalR();
 
 function setupSignalR() {
     connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:34372/account/hub")
+        .withUrl("http://localhost:34372/hub")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
@@ -43,8 +43,8 @@ async function getdata() {
     fetch('http://localhost:34372/account')
         .then(x => x.json())
         .then(y => {
-            accounts = y;
-            console.log(accounts);
+            transactions = y;
+            console.log(transactions);
             display();
             showupdate(accountIdToUpdate);
         });
@@ -52,7 +52,7 @@ async function getdata() {
 
 function display() {
     document.getElementById('resultarea').innerHTML = "";
-    accounts.forEach(t => {
+    transactions.forEach(t => {
         document.getElementById('resultarea').innerHTML +=
             " <tr><td>"
         + t.accountNumber_ID + "</td><td>"
@@ -83,20 +83,20 @@ function remove(id) {
 }
 
 function showupdate(id) {
-    document.getElementById('customeridupdate').value = accounts.find(x => x['accountNumber_ID'] == id)['customerId'];
+    document.getElementById('customeridupdate').value = transactions.find(x => x['accountNumber_ID'] == id)['customerId'];
 
-    let acct = accounts.find(x => x['accountNumber_ID'] == id)['accountType'];
+    let acct = transactions.find(x => x['accountNumber_ID'] == id)['accountType'];
     if (acct == "Savings") {
         document.getElementById("savingsupdate").checked = true;
     } else {
         document.getElementById("currentupdate").checked = true;
     }
-    document.getElementById('balaceupdate').value = accounts.find(x => x['accountNumber_ID'] == id)['balance'];
+    document.getElementById('balaceupdate').value = transactions.find(x => x['accountNumber_ID'] == id)['balance'];
 
-    let creationdate = accounts.find(x => x['accountNumber_ID'] == id)['creationDate'];
+    let creationdate = transactions.find(x => x['accountNumber_ID'] == id)['creationDate'];
     document.getElementById('creationdateupdate').value = creationdate.split("T")[0];
 
-    let currencytype = accounts.find(x => x['accountNumber_ID'] == id)['currencyType'];
+    let currencytype = transactions.find(x => x['accountNumber_ID'] == id)['currencyType'];
     if (currencytype == "EUR") {
         document.getElementById("eurupdate").checked = true;
     } else {

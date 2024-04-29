@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Transaction</title>
+    <title>NonCrud</title>
     <link rel="stylesheet" href="style.css" />
     <style>
         /* Styles for navigation */
@@ -55,60 +55,34 @@
             <li><a href="/NonCrud.html">NonCruds</a></li>
         </ul>
     </nav>
-    <h1>Transaction Catalog</h1>
-    <div id="formdiv">
-
-        <label>AccountId</label>
-        <input type="number" id="accountidcreate" />
-
-        <label>Amount</label>
-        <input type="number" id="amountcreate" />
-
-        <label>Description</label>
-        <input type="text" id="descriptioncreate" />
-
-        <button type="button" onclick="create()">Add Account</button>
-    </div>
-
-    <h2>Transaction Updater</h2>
-    <div id="updateformdiv">
-
-        <label>AccountId</label>
-        <input type="number" id="accountidupdate" />
-
-        <label>Date</label>
-        <input type="date" id="dateupdate" />
-
-
-        <label>Amount</label>
-        <input type="number" id="amountupdate" />
-
-        <label>Description</label>
-        <input type="text" id="descriptionupdate" />
-
-
-        <button type="button" onclick="update()">Update Account</button>
-    </div>
-
+    <h1>GetCustomerTransactionInfo</h1>
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>AccountId</th>  <!--asd-->
-                <th>Date</th>
-                <th>Amount</th> <!--asd-->
-                <th>Description</th> <!--asd-->
-                <th>Action</th>
+                <th>customerId</th>
+                <th>firstName</th>
+                <th>lastName</th>
+                <th>numberOfTransactions</th>
             </tr>
         </thead>
         <tbody id="resultarea">
         </tbody>
     </table>
-
-
-
+    <!--<h1>GetCustomerTransactionInfo</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>customerId</th>
+                <th>firstName</th>
+                <th>lastName</th>
+                <th>numberOfTransactions</th>
+            </tr>
+        </thead>
+        <tbody id="resultareaGetCustomerTransactionInfo">
+        </tbody>
+    </table>-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-    <script src="transcript.js"></script>
+    <script src="crud.js"></script>
 </body>
 </html>
