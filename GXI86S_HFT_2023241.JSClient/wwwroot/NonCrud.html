@@ -39,10 +39,10 @@
 
         body {
             background-color: #222;
-            color: #fff; /* Set text color to white for better contrast */
-            font-family: Arial, sans-serif; /* Set a font family */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -68,20 +68,64 @@
         <tbody id="resultarea">
         </tbody>
     </table>
-    <!--<h1>GetCustomerTransactionInfo</h1>
+
+    <h1>CustomersWithAccountsAndTransactions</h1>
     <table>
         <thead>
             <tr>
-                <th>customerId</th>
-                <th>firstName</th>
-                <th>lastName</th>
-                <th>numberOfTransactions</th>
+                <th>CustomerId</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Accounts   (Account Number -- Transaction Count) </th>
             </tr>
         </thead>
-        <tbody id="resultareaGetCustomerTransactionInfo">
+        <tbody id="resultareaCustomersWithAccountsAndTransactions">
         </tbody>
-    </table>-->
+    </table>
 
+
+    <h1>CustomerTransactionDetails</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>CustomerName</th>
+                <th>TotalTransactionAmount</th>
+                <th>Accountid</th>
+                <th>CurrencyType </th>
+                <th>AccountType </th>
+            </tr>
+        </thead>
+        <tbody id="resultareaCustomerTransactionDetails">
+        </tbody>
+    </table>
+
+    <h1>TotalSpendingLast30Days</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>CustomerId</th>
+                <th>CustomerName</th>
+                <th>TotalSpending</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="resultareaTotalSpendingLast30Days">
+        </tbody>
+    </table>
+
+    <h1>LastIncomePerCustomer</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>CustomerName</th>
+                <th>LastIncomeAmount</th>
+                <th>CurrencyType</th>
+            </tr>
+        </thead>
+        <tbody id="resultareaLastIncomePerCustomer">
+        </tbody>
+    </table>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script src="crud.js"></script>
 </body>
